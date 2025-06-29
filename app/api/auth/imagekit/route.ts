@@ -1,5 +1,5 @@
+import config from "@/lib/config";
 import ImageKit from "imagekit";
-import config from "next/config";
 import { NextResponse } from "next/server";
 
 const {

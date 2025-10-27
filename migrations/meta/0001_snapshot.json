@@ -1,6 +1,6 @@
 {
-  "id": "d98ab533-8d36-4a7f-b9d9-d7bbff840b92",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "d8b35908-29b2-4468-8c42-5f0e70e2098e",
+  "prevId": "d98ab533-8d36-4a7f-b9d9-d7bbff840b92",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -117,6 +117,12 @@
           "primaryKey": false,
           "notNull": false,
           "default": "now()"
+        },
+        "reference_num": {
+          "name": "reference_num",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},

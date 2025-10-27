@@ -1,6 +1,6 @@
 "use client";
 import AuthForm from "@/components/AuthForm";
-import { signInWithCredentials, signUp } from "@/lib/actions/auth";
+import { signUp } from "@/lib/actions/auth";
 import { signUpSchema } from "@/lib/validations";
 import React from "react";
 
@@ -12,6 +12,7 @@ const Page = () => {
       defaultValues={{
         email: "",
         password: "",
+        confirmPassword: "",
       }}
       onSubmit={signUp}
     />

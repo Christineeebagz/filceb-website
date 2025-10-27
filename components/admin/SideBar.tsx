@@ -1,13 +1,18 @@
 "use client";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { adminSideBarLinks } from "@/constants";
+import { getInitials, cn } from "@/lib/utils";
+import { Session } from "next-auth";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
 
-const SideBar = () => {
+const SideBar = ({ session }: { session: Session }) => {
   const pathname = usePathname();
+  console.log("Session object:", session);
   return (
-    <div className="sticky left-0 top-0 flex h-dvh flex-col  bg-white px-5 pb-5 pt-10;">
+    <div className="sticky bg-blue left-0 top-0 flex h-dvh flex-col justify-between bg-white px-5 pb-5 pt-10">
+      {/* sticky left-0 top-0 flex h-dvh flex-col  bg-amber-200 px-5 pb-5 pt-10 gap-6"> */}
       SideBar
       {adminSideBarLinks.map((link) => {
         const isSelected =
@@ -23,6 +28,9 @@ const SideBar = () => {
           </Link>
         );
       })}
+      <div>
+        <p>{session?.user?.email}</p>
+      </div>
     </div>
   );
 };

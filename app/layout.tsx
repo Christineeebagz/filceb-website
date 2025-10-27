@@ -18,7 +18,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "FilCeb",
-  description: "Insert FilCeb description or FilCeb Website description",
+  description:
+    "Based in Cebu, our organization is more than a business club—it's a vibrant platform for collaboration and growth. We unite small to medium enterprises (SMEs), fueling a powerful force for economic development. Our mission is to empower these local businesses by providing resources and fostering an environment where experiences are shared, and learning is mutual.",
 };
 
 const RootLayout = async ({ children }: { children: ReactNode }) => {

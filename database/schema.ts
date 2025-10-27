@@ -11,7 +11,7 @@ import {
   timestamp,
 } from "drizzle-orm/pg-core";
 
-export const BUSINESS_ENUM = pgEnum("businessType", [
+export const BUSINESS_ENUM = pgEnum("businesstype", [
   "CORPORATION",
   "SOLE PROPRIETORSHIP",
   "PARTNERSHIP",
@@ -19,7 +19,9 @@ export const BUSINESS_ENUM = pgEnum("businessType", [
   "OTHERS",
 ]);
 export const STATUS_ENUM = pgEnum("status", [
+  "UNSUBMITTED",
   "PENDING",
+  "PRE-APPROVED",
   "APPROVED",
   "REJECTED",
 ]);
@@ -37,14 +39,15 @@ export const users = pgTable("users", {
   province: varchar("province", { length: 100 }),
   city: varchar("city", { length: 100 }),
   businessName: varchar("business_name", { length: 200 }),
-  businessType: BUSINESS_ENUM("businessType"),
+  businesstype: BUSINESS_ENUM("businesstype"),
 
   idUpload: text("id_upload"),
   businessDocuments: text("business_documents"),
-  status: STATUS_ENUM("status").default("PENDING"),
+  status: STATUS_ENUM("status").default("UNSUBMITTED"),
   role: ROLE_ENUM("role").default("USER"),
   lastActivityDate: date("last_activity_date").notNull().defaultNow(),
   createdAt: timestamp("created_at", {
     withTimezone: true,
   }).defaultNow(),
+  referenceNum: text("reference_num"),
 });

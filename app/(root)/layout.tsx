@@ -1,8 +1,11 @@
 // app/(root)/layout.tsx
 import { auth, signOut } from "@/auth";
 import Header from "@/components/Header";
+import Approved from "@/components/status/approved/page";
 import Pending from "@/components/status/pending/page";
+import Preapproved from "@/components/status/preapproved/page";
 import Register from "@/components/status/register/page";
+import Rejected from "@/components/status/rejected/page";
 import { Button } from "@/components/ui/button";
 import { redirect } from "next/navigation";
 import { ReactNode } from "react";
@@ -14,7 +17,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
   const session = await auth();
 
   if (!session) {
-    redirect("/sign-in");
+    redirect("/home");
   }
 
   return (
@@ -43,7 +46,9 @@ export default async function Layout({ children }: { children: ReactNode }) {
           {/* Conditional content based on status */}
           {session.user.status === "UNSUBMITTED" && <Register />}
           {session.user.status === "PENDING" && <Pending />}
-          {session.user.status === "APPROVED" && children}
+          {session.user.status === "PRE-APPROVED" && <Preapproved />}
+          {session.user.status === "APPROVED" && <Approved />}
+          {session.user.status === "REJECTED" && <Rejected />}
         </div>
       </div>
     </main>

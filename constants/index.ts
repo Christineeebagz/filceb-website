@@ -31,11 +31,11 @@ export const FIELD_TYPES = {
 
 export const adminSideBarLinks = [
   {
-    route: "/admin",
-    text: "Home",
-  },
-  {
     route: "/admin/users",
     text: "Users",
+  },
+  {
+    route: "/admin/content",
+    text: "Content",
   },
 ];

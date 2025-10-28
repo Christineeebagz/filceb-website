@@ -3,11 +3,13 @@ import { eq } from "drizzle-orm";
 import { db } from "@/database/drizzle";
 import { users } from "@/database/schema";
 import { hash } from "bcryptjs";
-import { signIn, signOut } from "@/auth";
+import { signIn } from "@/auth";
 import { revalidatePath } from "next/cache";
 import { AuthCredentials } from "@/types";
 import { compare } from "bcryptjs";
+import type { BusinessType } from "@/lib/validations";
 
+// lib/actions/auth.ts - Update the register function
 export const register = async (params: {
   email: string;
   firstName: string;
@@ -71,103 +73,13 @@ export const register = async (params: {
 
     console.log("Registration successful for:", email);
 
-    // Debug logging
-    console.log("Database update completed. New status should be: PENDING");
-
-    // Verify the update worked by fetching the user again
-    const updatedUser = await db
-      .select()
-      .from(users)
-      .where(eq(users.email, email))
-      .limit(1);
-
-    console.log("Verified user status after update:", updatedUser[0]?.status);
-
     // Clear all caches
     revalidatePath("/", "layout");
     revalidatePath("/(root)", "layout");
 
-    return { success: true };
+    return { success: true, requiresRefresh: true }; // Add flag for client
   } catch (error: any) {
     console.error("Registration error details:", error);
-    return {
-      success: false,
-      error: error.message || "Failed to complete registration",
-    };
-  }
-};
-
-// Add this new function to handle registration with session refresh
-export const registerAndRefresh = async (params: {
-  email: string;
-  firstName: string;
-  lastName: string;
-  phone: string;
-  barangayAddress: string;
-  province: string;
-  city: string;
-  businessName: string;
-  businesstype: string;
-  idUpload: string | null;
-  businessDocuments: string | null;
-  password: string; // We need the password to sign back in
-}) => {
-  const {
-    email,
-    firstName,
-    lastName,
-    phone,
-    barangayAddress,
-    province,
-    city,
-    businessName,
-    businesstype,
-    idUpload,
-    businessDocuments,
-    password,
-  } = params;
-
-  try {
-    // First, update the user data
-    const updateResult = await register({
-      email,
-      firstName,
-      lastName,
-      phone,
-      barangayAddress,
-      province,
-      city,
-      businessName,
-      businesstype,
-      idUpload,
-      businessDocuments,
-    });
-
-    if (!updateResult.success) {
-      return updateResult;
-    }
-
-    // Force sign out and sign back in to refresh session
-    await signOut({ redirect: false });
-
-    // Sign back in with the same credentials to get fresh session
-    const signInResult = await signIn("credentials", {
-      email,
-      password,
-      redirect: false,
-    });
-
-    if (signInResult?.error) {
-      return {
-        success: false,
-        error:
-          "Registration completed but session refresh failed. Please sign in again.",
-      };
-    }
-
-    return { success: true };
-  } catch (error: any) {
-    console.error("Register and refresh error:", error);
     return {
       success: false,
       error: error.message || "Failed to complete registration",

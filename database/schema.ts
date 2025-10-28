@@ -51,3 +51,33 @@ export const users = pgTable("users", {
   }).defaultNow(),
   referenceNum: text("reference_num"),
 });
+
+export const POST_TYPE_ENUM = pgEnum("post_type", [
+  "TEXT",
+  "IMAGE",
+  "LINK",
+  "EMBED",
+]);
+
+export const POST_STATUS_ENUM = pgEnum("post_status", [
+  "DRAFT",
+  "PUBLISHED",
+  "ARCHIVED",
+]);
+
+export const posts = pgTable("posts", {
+  id: uuid("id").notNull().primaryKey().defaultRandom().unique(),
+  title: varchar("title", { length: 200 }).notNull(),
+  content: text("content"),
+  type: POST_TYPE_ENUM("type").notNull().default("TEXT"),
+  mediaUrl: text("media_url"),
+  embedCode: text("embed_code"),
+  status: POST_STATUS_ENUM("status").notNull().default("DRAFT"),
+  authorId: uuid("author_id")
+    .notNull()
+    .references(() => users.id),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),
+  publishedAt: timestamp("published_at", { withTimezone: true }),
+  orderIndex: integer("order_index").default(0),
+});

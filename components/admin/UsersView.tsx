@@ -1,9 +1,6 @@
 "use client";
 
-import type React from "react";
-
 import { useState, useMemo, useEffect } from "react";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -13,8 +10,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"; // ADDITION: Import Select components
-
+} from "@/components/ui/select";
 import { Eye, ChevronUp, ChevronDown } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { UserDetailsModal } from "./UserDetailsModal";
@@ -26,15 +22,9 @@ interface User {
   firstName: string | null;
   lastName: string | null;
   businessName: string | null;
-  businesstype:
-    | "CORPORATION"
-    | "SOLE PROPRIETORSHIP"
-    | "PARTNERSHIP"
-    | "COOPERATIVE"
-    | "OTHERS"
-    | null;
-  status: "UNSUBMITTED" | "PENDING" | "PRE-APPROVED" | "APPROVED" | "REJECTED";
-  role: "USER" | "ADMIN";
+  businesstype: string | null;
+  status: string;
+  role: string;
   phone: string | null;
   barangayAddress: string | null;
   province: string | null;
@@ -48,7 +38,6 @@ type SortField = keyof User;
 type SortDirection = "asc" | "desc";
 
 export default function UsersView() {
-  //   const [users] = useState<User[]>(mockUsers);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [users, setUsers] = useState<User[]>([]);
@@ -66,14 +55,10 @@ export default function UsersView() {
   const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
   const [updatingStatus, setUpdatingStatus] = useState<Record<string, boolean>>(
     {}
-  ); // ADDITION: Track updating status per user
+  );
 
-  // ADDITION: Function to handle status change
-  // ADDITION: Function to handle status change
-  const handleStatusChange = async (
-    userId: string,
-    newStatus: User["status"]
-  ) => {
+  // Function to handle status change
+  const handleStatusChange = async (userId: string, newStatus: string) => {
     setUpdatingStatus((prev) => ({ ...prev, [userId]: true }));
 
     try {
@@ -95,9 +80,6 @@ export default function UsersView() {
           user.id === userId ? { ...user, status: newStatus } : user
         )
       );
-
-      // ADDITION: Revalidate the layout to refresh session data
-      await fetch("/api/revalidate?path=/&tag=layout");
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "Failed to update user status"
@@ -148,7 +130,7 @@ export default function UsersView() {
     });
   }, [users, filters, sortField, sortDirection]);
 
-  const getStatusBadgeVariant = (status: User["status"]) => {
+  const getStatusBadgeVariant = (status: string) => {
     switch (status) {
       case "APPROVED":
         return "default";
@@ -184,6 +166,7 @@ export default function UsersView() {
 
     fetchUsers();
   }, []);
+
   const SortableHeader = ({
     field,
     children,
@@ -204,6 +187,7 @@ export default function UsersView() {
         ))}
     </button>
   );
+
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
@@ -305,7 +289,7 @@ export default function UsersView() {
                     <th className="text-left p-4 min-w-[100px]">
                       <SortableHeader field="status">Status</SortableHeader>
                     </th>
-                    {/* ADDITION: New column header for status change */}
+                    {/* Column for status change */}
                     <th className="text-left p-4 min-w-[150px]">
                       Change Status
                     </th>
@@ -328,11 +312,11 @@ export default function UsersView() {
                           {user.status}
                         </Badge>
                       </td>
-                      {/* ADDITION: Select dropdown for status change */}
+                      {/* Select dropdown for status change */}
                       <td className="p-4">
                         <Select
                           value={user.status}
-                          onValueChange={(value: User["status"]) =>
+                          onValueChange={(value: string) =>
                             handleStatusChange(user.id, value)
                           }
                           disabled={updatingStatus[user.id]}
@@ -385,6 +369,8 @@ export default function UsersView() {
               </table>
             </div>
           </div>
+
+          {/* Modal - THIS WAS WORKING */}
           {selectedUser && (
             <UserDetailsModal
               user={selectedUser}

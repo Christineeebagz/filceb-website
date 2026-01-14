@@ -1,0 +1,21 @@
+/* globals.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Optional: Add direct CSS rules as backup */
+.font-aileron {
+  font-family: var(--font-aileron), sans-serif;
+}
+
+.font-geist {
+  font-family: var(--font-geist-sans), sans-serif;
+}
+
+.font-geist-mono {
+  font-family: var(--font-geist-mono), monospace;
+}
+
+.font-times {
+  font-family: 'Times New Roman', Times, serif;
+}

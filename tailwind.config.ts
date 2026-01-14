@@ -1,3 +1,26 @@
+// tailwind.config.ts
+import type { Config } from "tailwindcss";
+
+const config: Config = {
+  content: [
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
+  ],
+  theme: {
+    extend: {
+      fontFamily: {
+        aileron: ["var(--font-aileron)"],
+        geist: ["var(--font-geist-sans)"],
+        "geist-mono": ["var(--font-geist-mono)"],
+        times: ["Times New Roman", "serif"],
+      },
+    },
+  },
+  plugins: [],
+};
+export default config;
 // import type { Config } from "tailwindcss";
 
 // export default {

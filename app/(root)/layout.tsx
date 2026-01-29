@@ -1,5 +1,6 @@
 import { auth } from "@/auth";
-import { Navbar } from "@/components/Navbar";
+import { Navbar } from "@/components/navbar/Navbar";
+
 import Approved from "@/components/status/approved/page";
 import Pending from "@/components/status/pending/page";
 import Preapproved from "@/components/status/preapproved/page";

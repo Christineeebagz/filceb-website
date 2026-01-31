@@ -125,7 +125,6 @@ const ProfileMenu = () => {
       </button>
 
       {/* Dropdown */}
-      {/* Dropdown */}
       {open && (
         <div
           className="absolute top-full mt-[2px] z-50 shadow-md
@@ -143,9 +142,9 @@ const ProfileMenu = () => {
             <button
               type="submit"
               className={`${aileron.className} font-[700] text-[14px]
-                   text-left px-4 py-3 rounded-[10px]
-                   transition-colors no-border
-                   hover:bg-gray-200 hover:text-[#F8EF30]`}
+             text-left px-4 py-3 rounded-[10px]
+             transition-colors no-border
+             hover:bg-gray-800 hover:text-white`} // ✅ updated hover
               style={{ color: "#1E1E1E", padding: "8px" }}
             >
               Sign Out

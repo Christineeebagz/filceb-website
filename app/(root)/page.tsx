@@ -1,39 +1,244 @@
-// import { auth } from "@/auth";
-// import Header from "@/components/Header";
-// import Register from "@/components/status/register/page";
-// import { Button } from "@/components/ui/button";
-// import { db } from "@/database/drizzle";
-// import { users } from "@/database/schema";
-// import Link from "next/link";
-// import { redirect } from "next/navigation";
+// "use client";
 
-// const Home = async () => {
-//   const session = await auth();
-//   if (!session) redirect("/sign-in");
-//   const result = await db.select().from(users);
+// import React from "react";
+// import { useRouter } from "next/navigation";
+// import { Navbar } from "@/components/navbar/Navbar";
+// import { HeroSection } from "@/components/home/HeroSection";
+// import { WhatIsFilcebSection } from "@/components/home/WhatIsFilcebSection";
+// import { WhyJoinSection } from "@/components/home/WhyJoinSection";
+// import { MemberCompaniesSection } from "@/components/home/MemberCompaniesSection";
+// import { CTASection } from "@/components/home/CTASection";
+// import { Footer } from "@/components/shared/Footer";
+
+// // Mock data - replace with actual data from your database
+// const mockBenefits = [
+//   {
+//     title: "Expert Mentorship",
+//     description:
+//       "Get personalized guidance from industry leaders and experienced entrepreneurs.",
+//     image: "/images/placeholder-benefit-1.jpg",
+//   },
+//   {
+//     title: "Collaborative Opportunities",
+//     description:
+//       "Network with peers and discover collaboration possibilities that drive growth.",
+//     image: "/images/placeholder-benefit-2.jpg",
+//   },
+//   {
+//     title: "Powerful Connections",
+//     description:
+//       "Build meaningful relationships with business professionals and innovators.",
+//     image: "/images/placeholder-benefit-3.jpg",
+//   },
+//   {
+//     title: "Immersive Experiences",
+//     description:
+//       "Participate in workshops, seminars, and events that expand your horizons.",
+//     image: "/images/placeholder-benefit-4.jpg",
+//   },
+// ];
+
+// const mockCompanies = [
+//   { name: "Company 1", logo: "/images/placeholder-logo-1.jpg" },
+//   { name: "Company 2", logo: "/images/placeholder-logo-2.jpg" },
+//   { name: "Company 3", logo: "/images/placeholder-logo-3.jpg" },
+//   { name: "Company 4", logo: "/images/placeholder-logo-4.jpg" },
+//   { name: "Company 5", logo: "/images/placeholder-logo-5.jpg" },
+//   { name: "Company 6", logo: "/images/placeholder-logo-6.jpg" },
+//   { name: "Company 7", logo: "/images/placeholder-logo-7.jpg" },
+//   { name: "Company 8", logo: "/images/placeholder-logo-8.jpg" },
+// ];
+
+// const mockCarouselImages = [
+//   "/images/placeholder-carousel-1.jpg",
+//   "/images/placeholder-carousel-2.jpg",
+//   "/images/placeholder-carousel-3.jpg",
+// ];
+
+// export default function Home() {
+//   const router = useRouter();
+
+//   const handleReadMore = () => {
+//     router.push("/about");
+//   };
 
 //   return (
-//     <div className="flex flex-col items-center justify-center min-h-screen gap-4">
-//       <h1 className="text-2xl font-bold">This is the User Home page</h1>
-//       <div className="mx-auto max-w-7xl">
-//         <Header session={session} />
+//     <main className="bg-background">
+//       <Navbar isAuthenticated={false} />
 
-//         <div className="mt-20 pb-20">{/* Show user info for debugging */}</div>
+//       {/* Add top margin to account for fixed navbar */}
+//       <div className="pt-16">
+//         {/* Hero Section */}
+//         <section className="px-4 py-12">
+//           <div className="max-w-6xl mx-auto">
+//             <HeroSection
+//               title="FILCEB BUSINESS CLUB"
+//               subtitle="Cebu, Philippines"
+//               images={{
+//                 main: "/images/placeholder-hero.jpg",
+//                 logo: "/images/placeholder-logo.jpg",
+//               }}
+//             />
+//           </div>
+//         </section>
+
+//         {/* What is Filceb Section */}
+//         <section className="px-4 py-12">
+//           <div className="max-w-6xl mx-auto">
+//             <WhatIsFilcebSection
+//               description="FILCEB Business Club Inc. is a non-government, non-profit organization for the purpose of networking, learning, business development and collaborating on projects."
+//               images={mockCarouselImages}
+//               onReadMore={handleReadMore}
+//             />
+//           </div>
+//         </section>
+
+//         {/* Why Join Us Section */}
+//         <section className="px-4 py-12">
+//           <div className="max-w-6xl mx-auto">
+//             <WhyJoinSection benefits={mockBenefits} />
+//           </div>
+//         </section>
+
+//         {/* Member Companies Section */}
+//         <section className="px-4 py-12">
+//           <div className="max-w-6xl mx-auto">
+//             <MemberCompaniesSection companies={mockCompanies} />
+//           </div>
+//         </section>
+
+//         {/* CTA Section */}
+//         <section className="px-4 py-12">
+//           <div className="max-w-6xl mx-auto">
+//             <CTASection
+//               title="Ready to ignite growth for your business?"
+//               description="Join a community of like-minded entrepreneurs and business professionals."
+//               ctaText="Join Us"
+//               ctaLink="/sign-up"
+//             />
+//           </div>
+//         </section>
 //       </div>
-//     </div>
+
+//       {/* Footer */}
+//       <Footer />
+//     </main>
 //   );
-// };
+// }
+"use client";
 
-// export default Home;
-// app/(root)/page.tsx
-const Home = async () => {
+import React from "react";
+import { useRouter } from "next/navigation";
+import { HeroSection } from "@/components/home/HeroSection";
+import { WhatIsFilcebSection } from "@/components/home/WhatIsFilcebSection";
+import { WhyJoinSection } from "@/components/home/WhyJoinSection";
+import { MemberCompaniesSection } from "@/components/home/MemberCompaniesSection";
+import { CTASection } from "@/components/home/CTASection";
+
+// Mock data - replace with actual data from your database
+const mockBenefits = [
+  {
+    title: "Expert Mentorship",
+    description:
+      "Get personalized guidance from industry leaders and experienced entrepreneurs.",
+    image: "/images/placeholder-benefit-1.jpg",
+  },
+  {
+    title: "Collaborative Opportunities",
+    description:
+      "Network with peers and discover collaboration possibilities that drive growth.",
+    image: "/images/placeholder-benefit-2.jpg",
+  },
+  {
+    title: "Powerful Connections",
+    description:
+      "Build meaningful relationships with business professionals and innovators.",
+    image: "/images/placeholder-benefit-3.jpg",
+  },
+  {
+    title: "Immersive Experiences",
+    description:
+      "Participate in workshops, seminars, and events that expand your horizons.",
+    image: "/images/placeholder-benefit-4.jpg",
+  },
+];
+
+const mockCompanies = [
+  { name: "Company 1", logo: "/images/placeholder-logo-1.jpg" },
+  { name: "Company 2", logo: "/images/placeholder-logo-2.jpg" },
+  { name: "Company 3", logo: "/images/placeholder-logo-3.jpg" },
+  { name: "Company 4", logo: "/images/placeholder-logo-4.jpg" },
+  { name: "Company 5", logo: "/images/placeholder-logo-5.jpg" },
+  { name: "Company 6", logo: "/images/placeholder-logo-6.jpg" },
+  { name: "Company 7", logo: "/images/placeholder-logo-7.jpg" },
+  { name: "Company 8", logo: "/images/placeholder-logo-8.jpg" },
+];
+
+const mockCarouselImages = [
+  "/images/placeholder-carousel-1.jpg",
+  "/images/placeholder-carousel-2.jpg",
+  "/images/placeholder-carousel-3.jpg",
+];
+
+export default function Home() {
+  const router = useRouter();
+
+  const handleReadMore = () => {
+    router.push("/about");
+  };
+
   return (
-    <div className="flex flex-col items-center justify-center gap-4">
-      <h1 className="text-2xl font-bold">Welcome to Your Dashboard!</h1>
-      <p className="text-lg">Your application has been approved.</p>
-      <p>This is your main application content.</p>
-    </div>
-  );
-};
+    <main className="bg-background">
+      {/* Hero Section */}
+      <section className="px-4 py-12">
+        <div className="max-w-6xl mx-auto">
+          <HeroSection
+            title="FILCEB BUSINESS CLUB"
+            subtitle="Cebu, Philippines"
+            images={{
+              main: "/images/placeholder-hero.jpg",
+              logo: "/images/placeholder-logo.jpg",
+            }}
+          />
+        </div>
+      </section>
 
-export default Home;
+      {/* What is Filceb Section */}
+      <section className="px-4 py-12">
+        <div className="max-w-6xl mx-auto">
+          <WhatIsFilcebSection
+            description="FILCEB Business Club Inc. is a non-government, non-profit organization for the purpose of networking, learning, business development and collaborating on projects."
+            images={mockCarouselImages}
+            onReadMore={handleReadMore}
+          />
+        </div>
+      </section>
+
+      {/* Why Join Us Section */}
+      <section className="px-4 py-12">
+        <div className="max-w-6xl mx-auto">
+          <WhyJoinSection benefits={mockBenefits} />
+        </div>
+      </section>
+
+      {/* Member Companies Section */}
+      <section className="px-4 py-12">
+        <div className="max-w-6xl mx-auto">
+          <MemberCompaniesSection companies={mockCompanies} />
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="px-4 py-12">
+        <div className="max-w-6xl mx-auto">
+          <CTASection
+            title="Ready to ignite growth for your business?"
+            description="Join a community of like-minded entrepreneurs and business professionals."
+            ctaText="Join Us"
+            ctaLink="/sign-up"
+          />
+        </div>
+      </section>
+    </main>
+  );
+}

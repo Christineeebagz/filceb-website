@@ -1,20 +1,3 @@
-// import React, { ReactNode } from "react";
-
-// const Layout = ({ children }: { children: ReactNode }) => {
-//   return (
-//     <main>
-//       <section>{/* auth form (feel ko style lang ni) */}</section>
-//       <div>
-//         {/* kani ang auth box */}
-//         <h1>Filceb</h1>
-//         <div>{children}</div>
-//       </div>
-//     </main>
-//   );
-// };
-
-// export default Layout;
-
 import { auth } from "@/auth";
 import { Navbar } from "@/components/navbar/Navbar";
 

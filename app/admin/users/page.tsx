@@ -21,3 +21,5 @@ const page = () => {
 };
 
 export default page;
+
+// Should show different propal modalss

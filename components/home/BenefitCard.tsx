@@ -15,11 +15,11 @@ export const BenefitCard: React.FC<BenefitCardProps> = ({
   icon,
 }) => {
   return (
-    <div className="flex flex-col items-center gap-4 p-6 bg-primary text-primary-foreground rounded-lg border border-accent/20 hover:border-accent transition-colors">
+    <div className="flex flex-col items-center gap-4 p-6 rounded-lg border-2 transition-all hover:shadow-lg bg-[#1E1E1E] border-[#F8EF30]">
       {/* Card Header with Icon */}
       <div className="flex flex-col items-center gap-2 w-full">
-        {icon && <div className="text-accent text-3xl">{icon}</div>}
-        <h3 className="text-lg font-semibold text-center text-balance">
+        {icon && <div className="text-3xl text-[#F8EF30]">{icon}</div>}
+        <h3 className="text-lg font-semibold text-center text-balance text-white">
           {title}
         </h3>
       </div>
@@ -35,7 +35,7 @@ export const BenefitCard: React.FC<BenefitCardProps> = ({
       </div>
 
       {/* Description */}
-      <p className="text-sm text-center text-balance text-primary-foreground/90">
+      <p className="text-sm text-center text-balance text-[#D0D0D0]">
         {description}
       </p>
     </div>

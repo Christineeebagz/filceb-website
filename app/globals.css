@@ -1,8 +1,9 @@
 /* globals.css */
 
-@tailwind base;
+/* @tailwind base;
 @tailwind components;
-@tailwind utilities;
+@tailwind utilities; */
+@import "tailwindcss";
 
 /* Optional: Add direct CSS rules as backup */
 .font-aileron {
@@ -20,4 +21,5 @@
 .font-times {
   font-family: 'Times New Roman', Times, serif;
 }
+
 

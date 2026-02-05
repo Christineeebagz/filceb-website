@@ -34,7 +34,7 @@ export const ImageCarousel: React.FC<ImageCarouselProps> = ({
   };
 
   return (
-    <div className="relative w-full h-80 bg-muted rounded-lg overflow-hidden group">
+    <div className="relative w-full h-80 rounded-lg overflow-hidden group bg-[#F0F0F0]">
       {/* Images */}
       <div className="relative w-full h-full">
         {images.map((image, index) => (
@@ -57,14 +57,14 @@ export const ImageCarousel: React.FC<ImageCarouselProps> = ({
       {/* Navigation Buttons */}
       <button
         onClick={goToPrevious}
-        className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-primary/80 text-primary-foreground rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10"
+        className="absolute left-4 top-1/2 -translate-y-1/2 p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10 hover:opacity-100 bg-black/80 text-white"
       >
         <ChevronLeft size={20} />
       </button>
 
       <button
         onClick={goToNext}
-        className="absolute right-4 top-1/2 -translate-y-1/2 p-2 bg-primary/80 text-primary-foreground rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10"
+        className="absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10 hover:opacity-100 bg-black/80 text-white"
       >
         <ChevronRight size={20} />
       </button>
@@ -77,8 +77,8 @@ export const ImageCarousel: React.FC<ImageCarouselProps> = ({
             onClick={() => setCurrentIndex(index)}
             className={`w-2 h-2 rounded-full transition-all ${
               index === currentIndex
-                ? "bg-accent w-8"
-                : "bg-primary-foreground/50"
+                ? "w-8 bg-[#F8EF30]"
+                : "opacity-50 bg-white"
             }`}
           />
         ))}

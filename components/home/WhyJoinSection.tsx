@@ -16,12 +16,12 @@ interface WhyJoinSectionProps {
 
 export const WhyJoinSection: React.FC<WhyJoinSectionProps> = ({ benefits }) => {
   return (
-    <section className="py-16 px-4">
+    <section className="py-16 px-4 bg-white">
       <div className="max-w-6xl mx-auto">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-2 text-primary">
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-2 text-[#1E1E1E]">
           Why Join Us?
         </h2>
-        <p className="text-center text-muted-foreground mb-12 text-balance">
+        <p className="text-center mb-12 text-balance text-[#666666]">
           Discover the benefits of becoming part of our community
         </p>
 

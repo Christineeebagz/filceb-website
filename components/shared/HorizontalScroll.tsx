@@ -41,14 +41,14 @@ export const HorizontalScroll: React.FC<HorizontalScrollProps> = ({
         <>
           <button
             onClick={() => scroll("left")}
-            className="absolute left-0 top-1/2 -translate-y-1/2 p-2 bg-primary/80 text-primary-foreground rounded-full shadow-lg hover:bg-primary transition-colors z-10"
+            className="absolute left-0 top-1/2 -translate-y-1/2 p-2 rounded-full shadow-lg transition-colors z-10 bg-black/80 text-white"
           >
             <ChevronLeft size={20} />
           </button>
 
           <button
             onClick={() => scroll("right")}
-            className="absolute right-0 top-1/2 -translate-y-1/2 p-2 bg-primary/80 text-primary-foreground rounded-full shadow-lg hover:bg-primary transition-colors z-10"
+            className="absolute right-0 top-1/2 -translate-y-1/2 p-2 rounded-full shadow-lg transition-colors z-10 bg-black/80 text-white"
           >
             <ChevronRight size={20} />
           </button>

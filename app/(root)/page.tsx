@@ -188,7 +188,7 @@ export default function Home() {
   };
 
   return (
-    <main className="bg-background">
+    <main className="bg-white">
       {/* Hero Section */}
       <section className="px-4 py-12">
         <div className="max-w-6xl mx-auto">

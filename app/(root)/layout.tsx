@@ -16,12 +16,11 @@ export default async function Layout({ children }: { children: ReactNode }) {
   const session = await auth();
 
   if (!session) {
-    redirect("/home");
+    redirect("/");
   }
 
   return (
     <main>
-      <Navbar />
       <div className="mx-auto max-w-7xl pt-16">
         <div className="mt-4 pb-20 px-4">
           {/* Debug info - You can remove this in production */}

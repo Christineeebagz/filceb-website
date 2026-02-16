@@ -2,17 +2,12 @@ import React from "react";
 import { HorizontalScroll } from "@/components/shared/HorizontalScroll";
 import { CompanyLogoItem } from "./CompanyLogoItem";
 
-interface Company {
-  logo: string;
-  name: string;
-}
-
 interface MemberCompaniesSectionProps {
-  companies: Company[];
+  logos: string[]; // Now accepts an array of logo paths only
 }
 
 export const MemberCompaniesSection: React.FC<MemberCompaniesSectionProps> = ({
-  companies,
+  logos,
 }) => {
   return (
     <section className="py-16 px-4 rounded-lg bg-[#1E1E1E]">
@@ -26,11 +21,11 @@ export const MemberCompaniesSection: React.FC<MemberCompaniesSectionProps> = ({
 
         {/* Horizontal Scrolling Logos */}
         <HorizontalScroll showControls={true}>
-          {companies.map((company, index) => (
+          {logos.map((logo, index) => (
             <CompanyLogoItem
               key={index}
-              logo={company.logo}
-              companyName={company.name}
+              logo={logo}
+              companyName={`Member ${index + 1}`} // Generic name for accessibility/alt text
             />
           ))}
         </HorizontalScroll>

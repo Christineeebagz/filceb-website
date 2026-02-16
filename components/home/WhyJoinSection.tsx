@@ -25,8 +25,8 @@ export const WhyJoinSection: React.FC<WhyJoinSectionProps> = ({ benefits }) => {
           Discover the benefits of becoming part of our community
         </p>
 
-        {/* Benefit Cards Grid - 2x2 on desktop, 1 column on mobile */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Benefit Cards - 4 in a row on desktop, 1 column on mobile */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6">
           {benefits.map((benefit, index) => (
             <BenefitCard
               key={index}

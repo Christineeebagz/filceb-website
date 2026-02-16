@@ -51,6 +51,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/webpack-env": "^1.18.8",
     "autoprefixer": "^10.4.21",
     "drizzle-kit": "^0.31.2",
     "eslint": "^9",

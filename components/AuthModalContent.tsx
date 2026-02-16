@@ -19,6 +19,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
+import { aileron } from "@/lib/fonts";
 
 interface AuthModalContentProps {
   type: "SIGN_IN" | "SIGN_UP";
@@ -85,20 +87,41 @@ export default function AuthModalContent({ type }: AuthModalContentProps) {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+      {/* Header with Logo and Branding */}
       <div className="text-center space-y-3">
-        <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-[#F8EF30]/20 to-transparent mb-2">
-          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#F8EF30] to-[#F8EF30]/70" />
+        {/* Logo */}
+        <div className="flex justify-center mb-4">
+          <div className="relative w-16 h-16">
+            <Image
+              src="/logos/filceblogo.svg"
+              alt="Filceb Logo"
+              width={64}
+              height={64}
+              className="object-contain"
+              priority
+            />
+          </div>
         </div>
 
-        <h2 className="text-2xl font-bold text-white">
-          {isSignIn ? "Welcome Back" : "Join FilCeb"}
+        {/* Filceb Business Club - Aileron Black, All Caps */}
+        <h2
+          className={`${aileron.className} font-black text-xl text-white uppercase tracking-wide`}
+        >
+          Filceb Business Club
         </h2>
-        <p className="text-white/70 text-sm">
-          {isSignIn
-            ? "Sign in to continue your business journey"
-            : "Create your account to join our community"}
+
+        {/* Cebu, Philippines - Times New Roman */}
+        <p
+          className="text-white/80 text-sm"
+          style={{ fontFamily: "Times New Roman, serif" }}
+        >
+          Cebu, Philippines
         </p>
+
+        {/* Dynamic Title based on mode */}
+        <h3 className="text-2xl font-bold text-white mt-6">
+          {isSignIn ? "Welcome Back" : "Create an Account"}
+        </h3>
       </div>
 
       {/* Error Message */}
@@ -118,12 +141,12 @@ export default function AuthModalContent({ type }: AuthModalContentProps) {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-white/90 text-sm font-medium">
-                  Email Address
+                  E-mail
                 </FormLabel>
                 <FormControl>
                   <Input
                     type="email"
-                    placeholder="you@example.com"
+                    placeholder="Enter E-mail"
                     className={cn(
                       "bg-white/5 border-white/10 text-white",
                       "placeholder:text-white/40",
@@ -151,7 +174,7 @@ export default function AuthModalContent({ type }: AuthModalContentProps) {
                 <FormControl>
                   <Input
                     type="password"
-                    placeholder="••••••••"
+                    placeholder="Enter Password"
                     className={cn(
                       "bg-white/5 border-white/10 text-white",
                       "placeholder:text-white/40",
@@ -180,7 +203,7 @@ export default function AuthModalContent({ type }: AuthModalContentProps) {
                   <FormControl>
                     <Input
                       type="password"
-                      placeholder="••••••••"
+                      placeholder="Retype Password"
                       className={cn(
                         "bg-white/5 border-white/10 text-white",
                         "placeholder:text-white/40",
@@ -234,9 +257,9 @@ export default function AuthModalContent({ type }: AuthModalContentProps) {
                 Processing...
               </>
             ) : isSignIn ? (
-              "Sign In"
+              "Log-in"
             ) : (
-              "Create Account"
+              "Sign-Up"
             )}
           </Button>
         </form>
@@ -252,7 +275,7 @@ export default function AuthModalContent({ type }: AuthModalContentProps) {
             className="font-semibold text-[#F8EF30] hover:text-[#F8EF30]/80 hover:underline transition-colors"
             disabled={isLoading}
           >
-            {isSignIn ? "Sign up" : "Sign in"}
+            {isSignIn ? "Sign-up" : "Log-in"}
           </button>
         </p>
       </div>

@@ -36,6 +36,9 @@ export function AuthModal() {
       <div className="fixed inset-0 flex items-center justify-center p-4">
         <div
           className="relative w-full max-w-md bg-[#1E1E1E] rounded-xl shadow-2xl"
+          style={{
+            border: "5px solid #F8EF30", // Yellow outline with 5px stroke
+          }}
           onClick={(e) => e.stopPropagation()}
         >
           {/* Close Button */}

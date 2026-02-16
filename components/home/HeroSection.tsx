@@ -64,10 +64,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         </div>
       </div>
 
-      {/* Right: Branding and CTA */}
-      <div className="flex flex-col items-center md:items-start gap-8">
-        {/* Logo and Text */}
-        <div className="flex flex-col items-center md:items-start gap-4">
+      {/* Right: Branding and CTA - Centered */}
+      <div className="flex flex-col items-center gap-8">
+        {/* Logo and Text - Centered */}
+        <div className="flex flex-col items-center gap-4">
           {/* Logo Circle */}
           <div className="relative w-20 h-20">
             <Image
@@ -80,30 +80,40 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             />
           </div>
 
-          {/* Branding Text */}
-          <div className="text-center md:text-left">
+          {/* Branding Text - Centered with shadow on title */}
+          <div className="text-center">
             <h1
               className={`${aileron.className} font-black text-3xl md:text-5xl text-[#1E1E1E] leading-tight`}
+              style={{
+                textShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+                letterSpacing: "-0.02em",
+              }}
             >
               {title}
             </h1>
-            <p className="font-serif text-base md:text-lg text-[#1E1E1E] mt-2">
+            <p
+              className="font-serif text-[#1E1E1E] mt-2"
+              style={{
+                fontSize: "24px",
+                fontWeight: "bold",
+              }}
+            >
               {subtitle}
             </p>
           </div>
         </div>
 
-        {/* CTA Buttons - Updated to use modals */}
-        <div className="flex flex-col gap-3 w-full md:w-auto">
+        {/* CTA Buttons - Fixed width independent of text */}
+        <div className="flex flex-col gap-3 w-full items-center">
           <button
-            onClick={openSignIn} // Use modal function
-            className="w-full md:w-auto px-8 py-2 bg-[#F8EF30] text-[#1E1E1E] font-bold text-sm uppercase tracking-wide hover:opacity-90 transition-opacity rounded-sm"
+            onClick={openSignIn}
+            className="w-[180px] px-6 py-1 bg-[#F8EF30] text-[#1E1E1E] font-bold text-sm uppercase tracking-wide hover:opacity-90 transition-opacity rounded-sm"
           >
             Log-In
           </button>
           <button
-            onClick={openSignUp} // Use modal function
-            className="w-full md:w-auto px-8 py-2 bg-[#F8EF30] text-[#1E1E1E] font-bold text-sm uppercase tracking-wide hover:opacity-90 transition-opacity rounded-sm"
+            onClick={openSignUp}
+            className="w-[180px] px-6 py-1 bg-[#F8EF30] text-[#1E1E1E] font-bold text-sm uppercase tracking-wide hover:opacity-90 transition-opacity rounded-sm"
           >
             Sign Up
           </button>

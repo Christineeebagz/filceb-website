@@ -75,7 +75,7 @@ const NavLink = ({ href, label }: NavLinkProps) => {
           style={{
             width: underlineWidth,
             backgroundColor: "#F8EF30",
-            bottom: "-20px", // 👈 pushes underline to navbar bottom
+            bottom: "-25px", // 👈 pushes underline to navbar bottom
           }}
         />
       )}

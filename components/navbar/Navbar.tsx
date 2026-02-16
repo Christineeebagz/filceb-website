@@ -10,7 +10,7 @@ export async function Navbar() {
 
   return (
     <nav
-      className="mt-11 md:mt-[45px] w-full z-50 rounded-[30px] px-4 md:px-10 py-2 md:py-5 mx-auto max-w-[calc(100%-200px)] md:max-w-[calc(100%-200px)]"
+      className="mt-11 md:mt-[25px] w-full z-50 rounded-[30px] px-4 md:px-10 py-1 md:py-2 mx-auto max-w-[calc(100%-200px)] md:max-w-[calc(100%-200px)]"
       style={{ backgroundColor: "#1E1E1E" }}
     >
       <div className="w-full mx-[20px]">

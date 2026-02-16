@@ -1,4 +1,4 @@
-import NextAuth, { User } from "next-auth";
+import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { db } from "./database/drizzle";
 import { users } from "./database/schema";
@@ -6,9 +6,14 @@ import { eq } from "drizzle-orm";
 import { compare } from "bcryptjs";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  // 🔴 ADD THESE CRITICAL CONFIGS:
+  trustHost: true, // Required for local development
+  basePath: "/api/auth", // Explicitly set auth path
+
   session: {
     strategy: "jwt",
   },
+
   providers: [
     CredentialsProvider({
       async authorize(credentials): Promise<any> {
@@ -23,9 +28,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           .limit(1);
 
         if (user.length === 0) return null;
-
-        console.log("check the current user here");
-        console.log(user[0]);
 
         const isPasswordValid = await compare(
           credentials.password.toString(),
@@ -49,8 +51,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
     }),
   ],
+
   callbacks: {
-    async jwt({ token, user, trigger, session }) {
+    async jwt({ token, user }) {
       // Initial sign in
       if (user) {
         token.id = user.id;
@@ -61,8 +64,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         token.role = user.role;
       }
 
-      // ALWAYS fetch fresh user data from database on every JWT callback
-      // This ensures the session data is never stale
+      // Fetch fresh user data
       if (token.email) {
         const freshUser = await db
           .select()
@@ -71,7 +73,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           .limit(1);
 
         if (freshUser.length > 0) {
-          token.id = freshUser[0].id; // Make sure ID is included
+          token.id = freshUser[0].id;
           token.firstName = freshUser[0].firstName;
           token.lastName = freshUser[0].lastName;
           token.status = freshUser[0].status;
@@ -81,6 +83,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
       return token;
     },
+
     async session({ session, token }) {
       return {
         ...session,
@@ -97,5 +100,36 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         },
       };
     },
+
+    // 🔴 ADD THIS CALLBACK TO PREVENT REDIRECT LOOP:
+    authorized({ auth, request }) {
+      const { pathname } = request.nextUrl;
+
+      // Allow public access to these paths
+      const publicPaths = [
+        "/",
+        "/api/auth/signin",
+        "/api/auth/signout",
+        "/api/auth/callback",
+        "/api/auth/session",
+        "/api/auth/csrf",
+        "/api/auth/providers",
+        "/api/auth/error",
+      ];
+
+      // If accessing public path, allow
+      if (publicPaths.some((path) => pathname.startsWith(path))) {
+        return true;
+      }
+
+      // Otherwise, require authentication
+      return !!auth?.user;
+    },
+  },
+
+  // 🔴 OPTIONAL: Add pages config if using custom pages
+  pages: {
+    signIn: "/api/auth/signin",
+    error: "/api/auth/error",
   },
 });

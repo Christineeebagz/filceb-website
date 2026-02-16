@@ -3,7 +3,6 @@
 import React from "react";
 import Image from "next/image";
 import { ServiceCard } from "@/components/about/ServiceCard";
-import { Footer } from "@/components/shared/Footer";
 
 const services = [
   {
@@ -236,9 +235,6 @@ export default function AboutPage() {
           </div>
         </section>
       </div>
-
-      {/* Footer */}
-      <Footer />
     </main>
   );
 }

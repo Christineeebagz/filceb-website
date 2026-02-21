@@ -1,63 +1,45 @@
 // app/(root)/page.tsx
-"use client";
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
+import UnsubmittedStatus from "@/components/status/unsubmitted/page";
+import PendingStatus from "@/components/status/pending/page";
+import PreApprovedStatus from "@/components/status/preapproved/page";
+import RejectedStatus from "@/components/status/rejected/page";
+import Approved from "@/components/status/approved/page";
 
-import React from "react";
-import { HeroSection } from "@/components/home/HeroSection";
-import { WhatIsFilcebSection } from "@/components/home/WhatIsFilcebSection";
-import { WhyJoinSection } from "@/components/home/WhyJoinSection";
-import { MemberCompaniesClient } from "@/components/home/MemberCompaniesClient";
-import { CTASection } from "@/components/home/CTASection";
-import {
-  whyJoinBenefits,
-  whatIsFilcebImages,
-  heroImages,
-  ctaData,
-} from "@/constants/home-data";
+export default async function HomeAuthenticated() {
+  const session = await auth();
 
-export default function HomeAuthenticated() {
-  return (
-    <main className="bg-white">
-      <section className="px-4 py-12">
-        <div className="max-w-6xl mx-auto">
-          <HeroSection
-            title="FILCEB BUSINESS CLUB"
-            subtitle="Cebu, Philippines"
-            images={heroImages}
-          />
-        </div>
-      </section>
+  if (!session) {
+    redirect("/");
+  }
 
-      <section className="px-4 py-12">
-        <div className="max-w-6xl mx-auto">
-          <WhatIsFilcebSection
-            description="FILCEB Business Club Inc. is a non-government, non-profit organization for the purpose of networking, learning, business development and collaborating on projects."
-            images={whatIsFilcebImages}
-            // Removed onReadMore prop
-          />
-        </div>
-      </section>
+  const { status } = session.user;
 
-      <section className="px-4 py-12">
-        <div className="max-w-6xl mx-auto">
-          <WhyJoinSection benefits={whyJoinBenefits} />
-        </div>
-      </section>
+  // Render different status pages based on user status
+  switch (status) {
+    case "UNSUBMITTED":
+      return <UnsubmittedStatus />;
 
-      <section className="px-4 py-12">
-        <div className="max-w-6xl mx-auto">
-          <MemberCompaniesClient />
-        </div>
-      </section>
+    case "PENDING":
+      return <PendingStatus />;
 
-      <section className="px-4 py-12">
-        <div className="max-w-6xl mx-auto">
-          <CTASection
-            title={ctaData.title}
-            description={ctaData.description}
-            ctaText={ctaData.ctaText}
-          />
-        </div>
-      </section>
-    </main>
-  );
+    case "PRE-APPROVED":
+      return <PreApprovedStatus />;
+
+    case "REJECTED":
+      return <RejectedStatus />;
+
+    // For APPROVED status, you'll add the member page later
+    case "APPROVED":
+      return <Approved />;
+    //  (
+    //   <div className="min-h-screen bg-[#1E1E1E] flex items-center justify-center">
+    //     <p className="text-white">Member page coming soon...</p>
+    //   </div>
+    // );
+
+    default:
+      return <UnsubmittedStatus />;
+  }
 }

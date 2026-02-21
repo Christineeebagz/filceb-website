@@ -1,17 +1,23 @@
 // components/status/pending/page.tsx
-const Pending = () => {
+"use client";
+
+import React from "react";
+import { StatusMessage } from "../StatusMessage";
+
+const PendingStatus = () => {
   return (
-    <div className="max-w-2xl mx-auto text-center">
-      <h2 className="text-2xl font-bold mb-4">Application Under Review</h2>
-      <p className="text-lg mb-4">
-        Thank you for submitting your registration! Your application is
-        currently under review.
-      </p>
-      <p className="text-gray-600">
-        You will be notified once your application has been approved.
-      </p>
+    <div className="min-h-screen flex items-center justify-center ">
+      <StatusMessage
+        title="Application Received"
+        status="Pending"
+        statusColor="#FF751F" // Orange for pending
+        comment="Thank you for submitting your application and documents to the FilCeb Business Club"
+        instruction="Your information is now under review. We will update your status as soon as the process is complete."
+        closing="Thank you for your patience."
+        showContact={true}
+      />
     </div>
   );
 };
 
-export default Pending;
+export default PendingStatus;

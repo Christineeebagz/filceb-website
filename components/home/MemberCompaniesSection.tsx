@@ -3,11 +3,11 @@ import { HorizontalScroll } from "@/components/shared/HorizontalScroll";
 import { CompanyLogoItem } from "./CompanyLogoItem";
 
 interface MemberCompaniesSectionProps {
-  logos: string[]; // Now accepts an array of logo paths only
+  logos?: string[]; // Make it optional with ?
 }
 
 export const MemberCompaniesSection: React.FC<MemberCompaniesSectionProps> = ({
-  logos,
+  logos = [], // Provide a default empty array
 }) => {
   return (
     <section className="py-16 px-4 rounded-lg bg-[#1E1E1E]">
@@ -20,15 +20,21 @@ export const MemberCompaniesSection: React.FC<MemberCompaniesSectionProps> = ({
         </p>
 
         {/* Horizontal Scrolling Logos */}
-        <HorizontalScroll showControls={true}>
-          {logos.map((logo, index) => (
-            <CompanyLogoItem
-              key={index}
-              logo={logo}
-              companyName={`Member ${index + 1}`} // Generic name for accessibility/alt text
-            />
-          ))}
-        </HorizontalScroll>
+        {logos.length > 0 ? (
+          <HorizontalScroll showControls={true}>
+            {logos.map((logo, index) => (
+              <CompanyLogoItem
+                key={index}
+                logo={logo}
+                companyName={`Member ${index + 1}`}
+              />
+            ))}
+          </HorizontalScroll>
+        ) : (
+          <p className="text-center text-[#D0D0D0]">
+            Loading member companies...
+          </p>
+        )}
       </div>
     </section>
   );

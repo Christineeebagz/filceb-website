@@ -7,79 +7,77 @@ import { ServiceCard } from "@/components/about/ServiceCard";
 const services = [
   {
     letter: "W",
-    title: "Wisdom",
-    description:
-      "Share knowledge and insights from industry experts and experienced entrepreneurs.",
+    title: "Welfare",
+    description: "program for mutual aid and protection.",
   },
   {
     letter: "E",
     title: "Education",
-    description:
-      "Provide continuous learning opportunities through workshops and seminars.",
+    description: "and training",
   },
   {
     letter: "A",
-    title: "Advancement",
-    description:
-      "Help members grow their businesses and advance their professional careers.",
+    title: "Advertisement",
+    description: "via multi-media system",
   },
   {
     letter: "L",
-    title: "Leadership",
-    description:
-      "Foster strong leadership skills and business acumen in our community.",
+    title: "Loan",
+    description: "facilitation",
   },
   {
     letter: "T",
-    title: "Together",
+    title: "Transformation",
     description:
-      "Build a collaborative environment where businesses can flourish together.",
+      "of business by way of “business incubation” and serves as center for entrepreneurial development",
   },
   {
     letter: "H",
     title: "Growth",
-    description:
-      "Accelerate growth through networking, partnerships, and shared opportunities.",
+    description: "organizational capacity and promote issues through advocacy",
   },
 ];
 
 export default function AboutPage() {
-  return (
-    <main className="bg-background">
-      {/* Add top margin for fixed navbar */}
-      <div className="pt-16">
-        {/* Hero Section */}
-        <section className="bg-card px-4 py-12">
-          <div className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-              {/* Logo & Title */}
-              <div className="flex flex-col gap-4 order-2 md:order-1">
-                <div className="flex items-center gap-3">
-                  <div className="relative w-16 h-16">
-                    <Image
-                      src="/images/placeholder-logo.jpg"
-                      alt="FILCEB Logo"
-                      fill
-                      className="object-contain"
-                    />
-                  </div>
-                  <div>
-                    <h1 className="text-3xl font-bold text-primary">
-                      FILCEB BUSINESS CLUB
-                    </h1>
-                    <p className="text-muted-foreground">Cebu, Philippines</p>
-                  </div>
-                </div>
-              </div>
+  // Drop shadow style
+  const titleShadow = {
+    textShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+  };
 
-              {/* Vision Image */}
-              <div className="relative h-64 md:h-80 rounded-lg overflow-hidden order-1 md:order-2">
-                <Image
-                  src="/images/placeholder-vision.jpg"
-                  alt="Vision"
-                  fill
-                  className="object-cover"
-                />
+  return (
+    <main>
+      {/* Add top margin for fixed navbar */}
+      <div className="mt-[30px] mb-[50px]">
+        {/* Hero Section - Updated with centered content */}
+        <section className="bg-card px-4">
+          <div className="max-w-6xl mx-auto">
+            <div className="flex flex-col items-center text-center">
+              {/* Logo & Title - Centered */}
+              <div className="flex flex-col items-center gap-4">
+                <div className="relative w-24 h-24 md:w-32 md:h-32">
+                  <Image
+                    src="/logos/filceblogo.svg"
+                    alt="FILCEB Logo"
+                    width={128}
+                    height={128}
+                    className="object-contain"
+                    priority
+                  />
+                </div>
+                <div>
+                  <h1
+                    className="text-4xl md:text-5xl font-black text-[#1E1E1E]"
+                    style={titleShadow}
+                  >
+                    FILCEB BUSINESS CLUB
+                  </h1>
+                  <p
+                    className="font-serif text-[20px] mt-1 text-[#1E1E1E] font-bold"
+                    style={{ fontFamily: "Times New Roman, serif" }}
+                  >
+                    Cebu, Philippines
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -88,27 +86,30 @@ export default function AboutPage() {
         {/* Vision Section */}
         <section className="px-4 py-12">
           <div className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-[50px] items-center">
+              {/* Vision Content */}
+              <div className="flex flex-col gap-4 text-right">
+                <h2
+                  className="text-4xl font-black text-[#1E1E1E]"
+                  style={titleShadow}
+                >
+                  Vision
+                </h2>
+                <p className="text-foreground text-balance leading-relaxed font-light">
+                  Filceb Business Club Inc. (Filceb) envisions as one of the
+                  very credible and effective Micro, Small, Medium Enterprise
+                  (MSMEs) organizations that will catalyze Cebu&apos;s business
+                  growth for a stronge Philippine economy.
+                </p>
+              </div>
               {/* Vision Image */}
               <div className="relative h-64 md:h-80 rounded-lg overflow-hidden">
                 <Image
-                  src="/images/placeholder-vision-detail.jpg"
+                  src="/images/about-us/vision.jpg"
                   alt="Vision Detail"
                   fill
                   className="object-cover"
                 />
-              </div>
-
-              {/* Vision Content */}
-              <div className="flex flex-col gap-4">
-                <h2 className="text-2xl font-bold text-primary">Vision</h2>
-                <p className="text-foreground text-balance leading-relaxed">
-                  FILCEB embodies an aim as one of the key capable and effective
-                  MSEs, Small, Medium Enterprises (MSMEs) organizations that
-                  will catalyze CSOs&apos; economic opportunity. Our vision is
-                  to create a thriving ecosystem where businesses of all sizes
-                  can collaborate, grow, and succeed together.
-                </p>
               </div>
             </div>
           </div>
@@ -117,59 +118,87 @@ export default function AboutPage() {
         {/* Mission Section */}
         <section className="px-4 py-12 bg-muted/30">
           <div className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-              {/* Mission Content */}
-              <div className="flex flex-col gap-4 order-2 md:order-1">
-                <h2 className="text-2xl font-bold text-primary">Mission</h2>
-                <p className="text-foreground text-balance leading-relaxed">
-                  Our mission is to educate and encourage on the adoption of
-                  incorporation in Cebu and beyond. We:
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-[50px] items-center">
+              {/* Mission Images - Now on the left with two images stacked vertically */}
+              <div className="flex flex-col gap-4">
+                <div className="relative h-64 md:h-80 rounded-lg overflow-hidden">
+                  <Image
+                    src="/images/about-us/mission_1.jpg"
+                    alt="Mission 1"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="relative h-64 md:h-80 rounded-lg overflow-hidden">
+                  <Image
+                    src="/images/about-us/mission_2.jpg"
+                    alt="Mission 2"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              </div>
+
+              {/* Mission Content - Now on the right */}
+              <div className="flex flex-col gap-4">
+                <h2
+                  className="text-4xl font-black text-[#1E1E1E]"
+                  style={titleShadow}
+                >
+                  Mission
+                </h2>
+                <p className="text-foreground text-balance leading-relaxed font-light">
+                  Our missions are multifaceted and converge on the singular
+                  goal of fostering a thriving entrepreneurial ecosystem in Cebu
+                  and beyond:
                 </p>
 
                 {/* Mission Bullets */}
-                <ul className="space-y-3 text-foreground">
+                <ul className="space-y-3 text-foreground font-light">
                   <li className="flex gap-3">
                     <span className="text-accent font-bold">›</span>
-                    <span>
-                      <strong>encourage</strong> a new breed of entrepreneurs
-                      who understand that the sole purpose of wealth is not
-                      material benefit
+                    <span className="font-light">
+                      To <strong className="font-bold">help</strong> one another
+                      in promoting business opportunities among Micro, Small,
+                      Medium Entrepreneurs (MSMEs).
                     </span>
                   </li>
                   <li className="flex gap-3">
                     <span className="text-accent font-bold">›</span>
-                    <span>
-                      <strong>provide</strong> every CSE and entrepreneur a
-                      venue to develop, enhance and strengthen its potential and
-                      capabilities
+                    <span className="font-light">
+                      To <strong className="font-bold">encourage</strong> a new
+                      breed of entrepreneurs who understand that the sole
+                      purpose of wealth is not only for wealth&apos;s sake but
+                      to help other people.
                     </span>
                   </li>
                   <li className="flex gap-3">
                     <span className="text-accent font-bold">›</span>
-                    <span>
-                      <strong>provide</strong> appropriate assistance to CSE
-                      members with reliable support and foster collaboration
+                    <span className="font-light">
+                      To <strong className="font-bold">provide</strong> every
+                      Cebuano entrepreneur a venue to develop, enhance and
+                      strengthen its potential and capabilities in helping the
+                      Philippine economy.
                     </span>
                   </li>
                   <li className="flex gap-3">
                     <span className="text-accent font-bold">›</span>
-                    <span>
-                      <strong>foster</strong> strategic alliances with national
-                      and local government agencies to advance the cause of the
-                      MSMEs
+                    <span className="font-light">
+                      To <strong className="font-bold">provide</strong>{" "}
+                      appropriate assistance to Filceb members with reliable
+                      support and make exposure to local and international
+                      market.
+                    </span>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="text-accent font-bold">›</span>
+                    <span className="font-light">
+                      To <strong className="font-bold">foster</strong> strategic
+                      alliances with national and local government
+                      units/agencies to advance the cause of the MSMEs.
                     </span>
                   </li>
                 </ul>
-              </div>
-
-              {/* Mission Image */}
-              <div className="relative h-64 md:h-80 rounded-lg overflow-hidden order-1 md:order-2">
-                <Image
-                  src="/images/placeholder-mission.jpg"
-                  alt="Mission"
-                  fill
-                  className="object-cover"
-                />
               </div>
             </div>
           </div>
@@ -178,30 +207,36 @@ export default function AboutPage() {
         {/* History Section */}
         <section className="px-4 py-12">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-2xl font-bold text-primary mb-6">History</h2>
+            <h2
+              className="text-4xl font-black text-[#1E1E1E] mb-6 text-center"
+              style={titleShadow}
+            >
+              History
+            </h2>
 
-            <p className="text-foreground text-balance leading-relaxed mb-6">
-              On March 21, 2008, a group of Cebu-based young entrepreneurs
-              bonded together to form an organization. the FILCEB Business Club
-              Inc., with the primary concern on the business sector. The Club
-              should establish linkages with private, government and NGO
-              government organizations for enhanced assistance in support to
-              ascertain and broadened its operation.
+            <p className="text-foreground text-balance leading-relaxed mb-6 font-light text-center">
+              On March 6, 2008, a group of Cebu based young entrepreneurs bonded
+              together to form an organization, the FILCEB Business Club Inc.,
+              with the aim of establishing a strong MSME (Micro, Small, and
+              Medium Enterprise) in the business sector. The Club would tap or
+              establish linkages with private, government and non government
+              organization for whatever assistance it may avail in order to
+              strengthen and broaden its operation.
             </p>
 
             {/* History Images Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="relative h-48 md:h-56 rounded-lg overflow-hidden">
+              <div className="relative h-64 md:h-80 rounded-lg overflow-hidden">
                 <Image
-                  src="/images/placeholder-history-1.jpg"
+                  src="/images/about-us/history_1.jpg"
                   alt="History 1"
                   fill
                   className="object-cover"
                 />
               </div>
-              <div className="relative h-48 md:h-56 rounded-lg overflow-hidden">
+              <div className="relative h-64 md:h-80 rounded-lg overflow-hidden">
                 <Image
-                  src="/images/placeholder-history-2.jpg"
+                  src="/images/about-us/history_2.png"
                   alt="History 2"
                   fill
                   className="object-cover"
@@ -212,13 +247,17 @@ export default function AboutPage() {
         </section>
 
         {/* Programs and Services Section */}
-        <section className="px-4 py-12 bg-primary text-primary-foreground">
+        <section className="px-4 py-12 eZ">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold text-center mb-2">
+            <h2
+              className="text-3xl md:text-4xl font-black text-center mb-2 text-[#1E1E1E]"
+              style={titleShadow}
+            >
               Programs and Services
             </h2>
-            <p className="text-center text-primary-foreground/90 mb-12 text-balance">
-              Our commitment to member success through strategic initiatives
+            <p className="text-center text-[#666666] mb-12 text-balance font-light">
+              Our programs here in FilCeb can be summarized by the acronym{" "}
+              <span className="font-bold">WEALTH</span>:
             </p>
 
             {/* Service Cards Grid - WEALTH */}

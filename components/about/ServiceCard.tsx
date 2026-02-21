@@ -13,16 +13,19 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
 }) => {
   return (
     <div className="flex flex-col items-center gap-3 text-center">
-      {/* Letter Circle */}
-      <div className="w-16 h-16 bg-accent text-accent-foreground rounded-full flex items-center justify-center text-2xl font-bold">
+      {/* Letter Circle - Increased size further */}
+      <div className="w-24 h-24 bg-[#1E1E1E] text-[#F8EF30] rounded-full flex items-center justify-center text-3xl md:text-4xl font-black">
         {letter}
       </div>
 
-      {/* Title */}
-      <h3 className="font-semibold text-lg text-foreground">{title}</h3>
+      {/* Title - First letter yellow, rest dark */}
+      <h3 className="font-black text-lg text-[#1E1E1E]">
+        <span className="text-[#F8EF30]">{letter}</span>
+        {title.slice(1)}
+      </h3>
 
-      {/* Description */}
-      <p className="text-sm text-muted-foreground text-balance line-clamp-3">
+      {/* Description - Aileron light */}
+      <p className="text-sm text-[#666666] text-balance line-clamp-3 font-light">
         {description}
       </p>
     </div>

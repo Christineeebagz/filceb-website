@@ -2,7 +2,7 @@
 
 import { db } from "@/database/drizzle";
 import { posts } from "@/database/schema";
-import { eq, desc, and, sql } from "drizzle-orm";
+import { eq, desc, and, sql, count } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import type { NewPost, PostType, PostStatus } from "@/types/content";
 import { auth } from "@/auth";
@@ -79,22 +79,6 @@ export async function getPostById(postId: string) {
   }
 }
 
-// Get published posts for user feed
-export async function getPublishedPosts() {
-  try {
-    const publishedPosts = await db
-      .select()
-      .from(posts)
-      .where(eq(posts.status, "PUBLISHED"))
-      .orderBy(desc(posts.createdAt));
-
-    return { success: true, data: publishedPosts };
-  } catch (error) {
-    console.error("Error fetching published posts:", error);
-    return { success: false, error: "Failed to fetch posts" };
-  }
-}
-
 export async function createPost(postData: Omit<NewPost, "id" | "authorId">) {
   try {
     const session = await auth();
@@ -119,5 +103,86 @@ export async function createPost(postData: Omit<NewPost, "id" | "authorId">) {
   } catch (error) {
     console.error("Error creating post:", error);
     return { success: false, error: "Failed to create post" };
+  }
+}
+
+/// Get published posts for user feed with pagination
+export async function getPublishedPosts(
+  page: number = 1,
+  pageSize: number = 10
+) {
+  try {
+    // Ensure page is at least 1
+    const currentPage = Math.max(1, page);
+
+    // Calculate offset
+    const offset = (currentPage - 1) * pageSize;
+
+    // Get total count for pagination
+    const totalCountResult = await db
+      .select({ count: count() })
+      .from(posts)
+      .where(eq(posts.status, "PUBLISHED"));
+
+    const totalCount = Number(totalCountResult[0]?.count) || 0;
+    const totalPages = Math.max(1, Math.ceil(totalCount / pageSize));
+
+    console.log(
+      `Fetching page ${currentPage} with offset ${offset}, total pages: ${totalPages}, total posts: ${totalCount}`
+    );
+
+    // If current page exceeds total pages, return empty array
+    if (currentPage > totalPages) {
+      return {
+        success: true,
+        data: [],
+        pagination: {
+          currentPage,
+          pageSize,
+          totalPages,
+          totalCount,
+          hasNextPage: false,
+          hasPrevPage: currentPage > 1,
+        },
+      };
+    }
+
+    // Get paginated posts - ORDER BY publishedAt DESC (most recent first)
+    const publishedPosts = await db
+      .select()
+      .from(posts)
+      .where(eq(posts.status, "PUBLISHED"))
+      .orderBy(desc(posts.publishedAt))
+      .limit(pageSize)
+      .offset(offset);
+
+    console.log(`Found ${publishedPosts.length} posts for page ${currentPage}`);
+
+    return {
+      success: true,
+      data: publishedPosts,
+      pagination: {
+        currentPage,
+        pageSize,
+        totalPages,
+        totalCount,
+        hasNextPage: currentPage < totalPages,
+        hasPrevPage: currentPage > 1,
+      },
+    };
+  } catch (error) {
+    console.error("Error fetching published posts:", error);
+    return {
+      success: false,
+      error: "Failed to fetch posts",
+      pagination: {
+        currentPage: page,
+        pageSize,
+        totalPages: 0,
+        totalCount: 0,
+        hasNextPage: false,
+        hasPrevPage: false,
+      },
+    };
   }
 }

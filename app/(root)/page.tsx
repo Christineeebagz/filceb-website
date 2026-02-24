@@ -5,7 +5,6 @@ import UnsubmittedStatus from "@/components/status/unsubmitted/page";
 import PendingStatus from "@/components/status/pending/page";
 import PreApprovedStatus from "@/components/status/preapproved/page";
 import RejectedStatus from "@/components/status/rejected/page";
-import Approved from "@/components/status/approved/page";
 
 export default async function HomeAuthenticated() {
   const session = await auth();
@@ -30,14 +29,8 @@ export default async function HomeAuthenticated() {
     case "REJECTED":
       return <RejectedStatus />;
 
-    // For APPROVED status, you'll add the member page later
     case "APPROVED":
-      return <Approved />;
-    //  (
-    //   <div className="min-h-screen bg-[#1E1E1E] flex items-center justify-center">
-    //     <p className="text-white">Member page coming soon...</p>
-    //   </div>
-    // );
+      redirect("/approved");
 
     default:
       return <UnsubmittedStatus />;

@@ -39,3 +39,11 @@ export const adminSideBarLinks = [
     text: "Content",
   },
 ];
+
+export const BUSINESS_TYPES = [
+  "CORPORATION",
+  "SOLE PROPRIETORSHIP",
+  "PARTNERSHIP",
+  "COOPERATIVE",
+  "OTHERS",
+] as const;

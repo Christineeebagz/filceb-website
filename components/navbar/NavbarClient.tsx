@@ -5,6 +5,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { handleSignOut } from "@/app/actions/auth";
 import { aileron } from "@/lib/fonts";
+import { NavLinkWithHardNavigation } from "./NavLinkWithHardNavigation";
 
 /* ---------------------------------- */
 /* Types */
@@ -21,11 +22,6 @@ interface NavbarClientProps {
   user: User | null;
 }
 
-interface NavLinkProps {
-  href: string;
-  label: string;
-}
-
 /* ---------------------------------- */
 /* Main Navbar Client */
 /* ---------------------------------- */
@@ -40,52 +36,18 @@ export const NavbarClient = ({ user }: NavbarClientProps) => {
   return (
     <div className="flex items-center h-[48px] mr-[40px]">
       {/* Home tab - only shown for approved users */}
-      {showHomeInNav && <NavLink href="/" label="Home" />}
+      {showHomeInNav && <NavLinkWithHardNavigation href="/" label="Home" />}
 
       {/* About Us - shown for everyone */}
-      <NavLink href="/about" label="About Us" />
+      <NavLinkWithHardNavigation href="/about" label="About Us" />
 
       {/* Admin - only for admins */}
-      {user?.role === "ADMIN" && <NavLink href="/admin" label="Admin" />}
+      {user?.role === "ADMIN" && (
+        <NavLinkWithHardNavigation href="/admin" label="Admin" />
+      )}
 
       {/* Profile Menu */}
       <ProfileMenu user={user} />
-    </div>
-  );
-};
-
-/* ---------------------------------- */
-/* Navigation Link */
-/* ---------------------------------- */
-const NavLink = ({ href, label }: NavLinkProps) => {
-  const pathname = usePathname();
-  const isActive = pathname === href;
-  const underlineWidth = Math.max(label.length * 12, 60);
-
-  return (
-    <div className="relative h-[48px] flex items-center px-[22px]">
-      <Link
-        href={href}
-        className={`${aileron.className} font-[950] text-[20px] leading-none
-                    no-underline hover:no-underline
-                    flex items-center h-full`}
-        style={{ color: isActive ? "#F8EF30" : "#FFFFFF" }}
-      >
-        {label}
-      </Link>
-
-      {/* ACTIVE underline */}
-      {isActive && (
-        <div
-          className="absolute left-1/2 -translate-x-1/2
-                     h-[6px] rounded-full"
-          style={{
-            width: underlineWidth,
-            backgroundColor: "#F8EF30",
-            bottom: "-25px",
-          }}
-        />
-      )}
     </div>
   );
 };

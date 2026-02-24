@@ -1,14 +1,25 @@
+// FeedView.tsx
 "use client";
 
 import { Post } from "@/types/content";
 import { PostCard } from "./PostCard";
 
+interface PaginationInfo {
+  currentPage: number;
+  pageSize: number;
+  totalPages: number;
+  totalCount: number;
+  hasNextPage: boolean;
+  hasPrevPage: boolean;
+}
+
 interface FeedViewProps {
   posts: Post[];
   userEmail: string;
+  pagination: PaginationInfo;
 }
 
-export function FeedView({ posts, userEmail }: FeedViewProps) {
+export function FeedView({ posts, userEmail, pagination }: FeedViewProps) {
   if (posts.length === 0) {
     return (
       <div className="text-center py-12">
@@ -29,7 +40,7 @@ export function FeedView({ posts, userEmail }: FeedViewProps) {
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-semibold text-gray-900">Latest Updates</h2>
         <span className="text-sm text-gray-500">
-          {posts.length} post{posts.length !== 1 ? "s" : ""}
+          Showing {posts.length} of {pagination.totalCount} posts
         </span>
       </div>
 
@@ -37,6 +48,11 @@ export function FeedView({ posts, userEmail }: FeedViewProps) {
         {posts.map((post) => (
           <PostCard key={post.id} post={post} />
         ))}
+      </div>
+
+      {/* Page indicator */}
+      <div className="text-center text-sm text-gray-500">
+        Page {pagination.currentPage} of {pagination.totalPages}
       </div>
     </div>
   );

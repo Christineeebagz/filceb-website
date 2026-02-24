@@ -17,7 +17,6 @@ export default async function RootLayout({
 
   return (
     <>
-      <Navbar />
       <main>{children}</main>
     </>
   );

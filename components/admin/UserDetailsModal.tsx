@@ -66,6 +66,18 @@ export function UserDetailsModal({
     };
   };
 
+  // Format date function
+  const formatDate = (date: Date | string | null) => {
+    if (!date) return "N/A";
+    return new Date(date).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
+
   // Debug: Check what file paths we have
   console.log("User file paths:", {
     idUpload: user.idUpload,
@@ -279,6 +291,14 @@ export function UserDetailsModal({
                 <span className="text-muted-foreground">Reference Number:</span>
                 <span>{user.referenceNum || "N/A"}</span>
               </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Published At:</span>
+                <span className="font-medium">
+                  {user.status === "APPROVED" && user.published_at
+                    ? formatDate(user.published_at)
+                    : "Not published"}
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -302,154 +322,3 @@ function getStatusBadgeVariant(status: users["status"]) {
       return "outline";
   }
 }
-// "use client";
-
-// import { Badge } from "@/components/ui/badge";
-// import { users } from "@/database/schema";
-// import { X } from "lucide-react";
-
-// interface UserDetailsModalProps {
-//   user: users;
-//   isOpen: boolean;
-//   onClose: () => void;
-// }
-
-// export function UserDetailsModal({
-//   user,
-//   isOpen,
-//   onClose,
-// }: UserDetailsModalProps) {
-//   if (!isOpen) return null;
-
-//   return (
-//     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-//       {/* Backdrop */}
-//       <div
-//         className="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity"
-//         onClick={onClose}
-//       />
-
-//       {/* Modal */}
-//       <div className="relative z-50 w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-white rounded-xl shadow-lg">
-//         {/* Header */}
-//         <div className="flex items-center justify-between p-6 border-b">
-//           <h2 className="text-lg font-medium leading-6 text-gray-900">
-//             User Details
-//           </h2>
-//           <button
-//             onClick={onClose}
-//             className="rounded-sm p-2 opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-//           >
-//             <X className="h-4 w-4" />
-//             <span className="sr-only">Close</span>
-//           </button>
-//         </div>
-
-//         {/* Content */}
-//         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-6">
-//           {/* Left column */}
-//           <div className="space-y-3">
-//             <div>
-//               <label className="text-sm font-medium text-muted-foreground">
-//                 Email
-//               </label>
-//               <p className="text-sm mt-1">{user.email}</p>
-//             </div>
-//             <div>
-//               <label className="text-sm font-medium text-muted-foreground">
-//                 First Name
-//               </label>
-//               <p className="text-sm mt-1">{user.firstName || "N/A"}</p>
-//             </div>
-//             <div>
-//               <label className="text-sm font-medium text-muted-foreground">
-//                 Last Name
-//               </label>
-//               <p className="text-sm mt-1">{user.lastName || "N/A"}</p>
-//             </div>
-//             <div>
-//               <label className="text-sm font-medium text-muted-foreground">
-//                 Role
-//               </label>
-//               <p className="text-sm mt-1 capitalize">
-//                 {user.role?.toLowerCase() || "N/A"}
-//               </p>
-//             </div>
-//             <div>
-//               <label className="text-sm font-medium text-muted-foreground">
-//                 Status
-//               </label>
-//               <div className="mt-1">
-//                 <Badge variant={getStatusBadgeVariant(user.status)}>
-//                   {user.status}
-//                 </Badge>
-//               </div>
-//             </div>
-//           </div>
-
-//           {/* Right column */}
-//           <div className="space-y-3">
-//             <div>
-//               <label className="text-sm font-medium text-muted-foreground">
-//                 Business Name
-//               </label>
-//               <p className="text-sm mt-1">{user.businessName || "N/A"}</p>
-//             </div>
-//             <div>
-//               <label className="text-sm font-medium text-muted-foreground">
-//                 Business Type
-//               </label>
-//               <p className="text-sm mt-1">{user.businesstype || "N/A"}</p>
-//             </div>
-//             <div>
-//               <label className="text-sm font-medium text-muted-foreground">
-//                 Phone
-//               </label>
-//               <p className="text-sm mt-1">{user.phone || "N/A"}</p>
-//             </div>
-//             <div>
-//               <label className="text-sm font-medium text-muted-foreground">
-//                 Barangay Address
-//               </label>
-//               <p className="text-sm mt-1">{user.barangayAddress || "N/A"}</p>
-//             </div>
-//             <div>
-//               <label className="text-sm font-medium text-muted-foreground">
-//                 Location
-//               </label>
-//               <p className="text-sm mt-1">
-//                 {[user.city, user.province].filter(Boolean).join(", ") || "N/A"}
-//               </p>
-//             </div>
-//             <div>
-//               <label className="text-sm font-medium text-muted-foreground">
-//                 Registered Date
-//               </label>
-//               <p className="text-sm mt-1">
-//                 {user.createdAt
-//                   ? new Date(user.createdAt).toLocaleDateString()
-//                   : "N/A"}
-//               </p>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-// function getStatusBadgeVariant(status: users["status"]) {
-//   switch (status) {
-//     case "APPROVED":
-//       return "default";
-//     case "PENDING":
-//     case "PRE-APPROVED":
-//       return "secondary";
-//     case "REJECTED":
-//       return "destructive";
-//     case "UNSUBMITTED":
-//       return "outline";
-//     default:
-//       return "outline";
-//   }
-// }

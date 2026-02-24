@@ -24,20 +24,51 @@ export function PostForm({ post, mode }: PostFormProps) {
     orderIndex: post?.orderIndex || 0,
   });
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (status: "DRAFT" | "PUBLISHED" | "ARCHIVED") => {
     setIsLoading(true);
+
+    // Prepare the updated form data
+    const updatedFormData: any = {
+      ...formData,
+      status: status,
+    };
+
+    // Handle published_at based on status
+    const now = new Date();
+
+    // If publishing now (status changing to PUBLISHED)
+    if (status === "PUBLISHED") {
+      // Only set publishedAt if it's being published for the first time
+      // (no existing publishedAt value)
+      if (!post?.publishedAt) {
+        updatedFormData.publishedAt = now;
+      } else {
+        // If it was already published, keep the original publishedAt
+        updatedFormData.publishedAt = post.publishedAt;
+      }
+    }
+
+    // If archiving (only option to remove from publication)
+    else if (status === "ARCHIVED") {
+      // When archiving, publishedAt becomes null
+      updatedFormData.publishedAt = null;
+    }
+
+    // For drafts (and any other status), publishedAt should be null
+    else {
+      updatedFormData.publishedAt = null;
+    }
 
     try {
       if (mode === "create") {
-        const result = await createPost(formData);
+        const result = await createPost(updatedFormData);
         if (result.success) {
           router.push("/admin/content");
         } else {
           alert(`Error: ${result.error}`);
         }
       } else if (post) {
-        const result = await updatePost(post.id, formData);
+        const result = await updatePost(post.id, updatedFormData);
         if (result.success) {
           router.push("/admin/content");
         } else {
@@ -59,8 +90,11 @@ export function PostForm({ post, mode }: PostFormProps) {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
+  // Determine if post is published
+  const isPublished = post?.status === "PUBLISHED";
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 max-w-2xl">
+    <form onSubmit={(e) => e.preventDefault()} className="space-y-6 max-w-2xl">
       {/* Title */}
       <div>
         <label htmlFor="title" className="block text-sm font-medium mb-2">
@@ -95,22 +129,30 @@ export function PostForm({ post, mode }: PostFormProps) {
         </select>
       </div>
 
-      {/* Content - shown for TEXT type */}
-      {formData.type === "TEXT" && (
-        <div>
-          <label htmlFor="content" className="block text-sm font-medium mb-2">
-            Content
-          </label>
-          <textarea
-            id="content"
-            rows={6}
-            value={formData.content || ""}
-            onChange={(e) => handleChange("content", e.target.value)}
-            className="w-full p-2 border rounded-md"
-            placeholder="Enter post content"
-          />
-        </div>
-      )}
+      {/* Content - shown for ALL types (TEXT, IMAGE, LINK, EMBED) */}
+      <div>
+        <label htmlFor="content" className="block text-sm font-medium mb-2">
+          Content{" "}
+          {formData.type !== "TEXT" && "(Optional - Add text with your media)"}
+        </label>
+        <textarea
+          id="content"
+          rows={6}
+          value={formData.content || ""}
+          onChange={(e) => handleChange("content", e.target.value)}
+          className="w-full p-2 border rounded-md"
+          placeholder={
+            formData.type === "TEXT"
+              ? "Enter post content"
+              : "Enter accompanying text for your media (optional)"
+          }
+        />
+        {formData.type !== "TEXT" && (
+          <p className="text-sm text-gray-500 mt-1">
+            This text will appear alongside your {formData.type.toLowerCase()}
+          </p>
+        )}
+      </div>
 
       {/* Media URL - shown for IMAGE and LINK types */}
       {(formData.type === "IMAGE" || formData.type === "LINK") && (
@@ -150,28 +192,6 @@ export function PostForm({ post, mode }: PostFormProps) {
         </div>
       )}
 
-      {/* Status */}
-      <div>
-        <label htmlFor="status" className="block text-sm font-medium mb-2">
-          Status
-        </label>
-        <select
-          id="status"
-          value={formData.status}
-          onChange={(e) =>
-            handleChange(
-              "status",
-              e.target.value as "DRAFT" | "PUBLISHED" | "ARCHIVED"
-            )
-          }
-          className="w-full p-2 border rounded-md"
-        >
-          <option value="DRAFT">Draft</option>
-          <option value="PUBLISHED">Published</option>
-          <option value="ARCHIVED">Archived</option>
-        </select>
-      </div>
-
       {/* Order Index */}
       <div>
         <label htmlFor="orderIndex" className="block text-sm font-medium mb-2">
@@ -188,27 +208,69 @@ export function PostForm({ post, mode }: PostFormProps) {
         />
       </div>
 
+      {/* Published Info - Show for existing published posts */}
+      {mode === "edit" && post?.publishedAt && (
+        <div className="bg-blue-50 border border-blue-200 rounded-md p-3">
+          <p className="text-sm text-blue-800">
+            <span className="font-medium">Originally published:</span>{" "}
+            {new Date(post.publishedAt).toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+            })}
+          </p>
+        </div>
+      )}
+
       {/* Actions */}
-      <div className="flex gap-4">
-        <Button
-          type="submit"
-          disabled={isLoading}
-          className="bg-blue-600 hover:bg-blue-700"
-        >
-          {isLoading
-            ? "Saving..."
-            : mode === "create"
-              ? "Create Post"
-              : "Update Post"}
-        </Button>
+      <div className="flex flex-wrap gap-4 items-center">
+        <div className="flex gap-2">
+          <Button
+            type="button"
+            onClick={() => handleSubmit("DRAFT")}
+            disabled={isLoading}
+            variant="outline"
+            className="border-gray-300"
+          >
+            {isLoading ? "Saving..." : "Save as Draft"}
+          </Button>
+
+          <Button
+            type="button"
+            onClick={() => handleSubmit("PUBLISHED")}
+            disabled={isLoading}
+            className="bg-green-600 hover:bg-green-700 text-white"
+          >
+            {isLoading ? "Publishing..." : "Publish Post"}
+          </Button>
+        </div>
+
         <Button
           type="button"
           variant="outline"
           onClick={() => router.push("/admin/content")}
+          className="ml-auto"
         >
           Cancel
         </Button>
       </div>
+
+      {/* Archive option - ONLY shown for existing published posts */}
+      {mode === "edit" && isPublished && (
+        <div className="border-t pt-4 mt-4">
+          <Button
+            type="button"
+            onClick={() => handleSubmit("ARCHIVED")}
+            disabled={isLoading}
+            variant="outline"
+            className="border-red-300 text-red-600 hover:bg-red-50"
+          >
+            Archive Post (Remove from publication)
+          </Button>
+        </div>
+      )}
     </form>
   );
 }

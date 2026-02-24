@@ -1,4 +1,5 @@
 import { auth } from "@/auth";
+import { Navbar } from "@/components/navbar/Navbar";
 
 import { redirect } from "next/navigation";
 import React, { ReactNode } from "react";
@@ -10,6 +11,7 @@ const Layout = async ({ children }: { children: ReactNode }) => {
   return (
     <main className="min-h-screen flex flex-col ">
       {/* Main content area - vertically centered */}
+      <Navbar />
       <div className="flex-1 flex flex-col items-center justify-center px-4 py-8">
         {children}
         {/* </div> */}

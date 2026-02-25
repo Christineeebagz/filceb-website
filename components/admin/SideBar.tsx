@@ -21,25 +21,25 @@ const SideBar = ({ session }: { session: Session }) => {
   };
 
   return (
-    <div className="sticky left-0 top-0 flex h-dvh flex-col bg-[#1E1E1E] w-[280px] text-white">
+    <div className="sticky left-0 top-0 flex h-dvh flex-col bg-[#1E1E1E] w-[clamp(240px,20vw,320px)] text-white">
       {/* Logo and Brand Section - Top */}
       <button
         onClick={handleLogoClick}
-        className="flex flex-col items-center gap-4 py-8 px-6 w-full hover:bg-white/5 transition-colors cursor-pointer"
+        className="flex flex-col items-center gap-4 py-6 px-4 w-full hover:bg-white/5 transition-colors cursor-pointer"
       >
-        <div className="relative w-20 h-20 md:w-24 md:h-24">
+        <div className="relative w-[clamp(60px,8vw,96px)] h-[clamp(60px,8vw,96px)]">
           <Image
             src="/logos/filceblogo.svg"
             alt="FILCEB Logo"
             width={96}
             height={96}
-            className="object-contain"
+            className="object-contain w-full h-full"
             priority
           />
         </div>
         <div className="text-center">
           <h1
-            className={`${aileron.className} font-black text-xl text-white`}
+            className={`${aileron.className} font-black text-[clamp(1rem,2vw,1.25rem)] text-white`}
             style={{
               textShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
               letterSpacing: "-0.02em",
@@ -48,7 +48,7 @@ const SideBar = ({ session }: { session: Session }) => {
             FILCEB BUSINESS CLUB
           </h1>
           <p
-            className="font-serif text-sm text-white/80 mt-1"
+            className="font-serif text-[clamp(0.75rem,1.5vw,0.875rem)] text-white/80 mt-1"
             style={{ fontFamily: "Times New Roman, serif" }}
           >
             Cebu, Philippines
@@ -57,7 +57,7 @@ const SideBar = ({ session }: { session: Session }) => {
       </button>
 
       {/* Navigation Links - Below Logo */}
-      <nav className="flex-1">
+      <nav className="flex-1 px-3 py-2">
         {adminSideBarLinks.map((link, index) => {
           const isSelected = pathname === link.route;
           const isFirstItem = index === 0;
@@ -66,14 +66,10 @@ const SideBar = ({ session }: { session: Session }) => {
             <button
               key={link.route}
               onClick={() => (window.location.href = link.route)}
-              className={`w-full px-6 py-4 flex items-center gap-3 transition-all ${
+              className={`w-full mb-2 px-4 py-3 rounded-lg flex items-center gap-3 transition-all ${
                 isSelected
-                  ? isFirstItem
-                    ? "bg-white text-[#1E1E1E] font-bold"
-                    : "bg-white text-[#1E1E1E] font-bold"
-                  : isFirstItem
-                    ? "text-[#F8EF30] hover:bg-white/10"
-                    : "text-[#F8EF30] hover:bg-white/10"
+                  ? "bg-white text-[#1E1E1E] font-bold pr-0 mr-0"
+                  : "text-[#F8EF30] hover:bg-white/10"
               }`}
             >
               {/* Two different icons based on index */}
@@ -87,6 +83,7 @@ const SideBar = ({ session }: { session: Session }) => {
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
+                  className="flex-shrink-0"
                 >
                   <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
                   <circle cx="12" cy="7" r="4" />
@@ -101,12 +98,15 @@ const SideBar = ({ session }: { session: Session }) => {
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
+                  className="flex-shrink-0"
                 >
                   <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
                   <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
                 </svg>
               )}
-              <span className={`${aileron.className} text-lg font-medium`}>
+              <span
+                className={`${aileron.className} text-[clamp(0.875rem,1.5vw,1.125rem)] font-medium`}
+              >
                 {link.text}
               </span>
             </button>
@@ -115,7 +115,7 @@ const SideBar = ({ session }: { session: Session }) => {
       </nav>
 
       {/* Logout Section - Bottom */}
-      <div className="border-t border-white/20 pt-6 pb-8 px-6 space-y-3">
+      <div className="border-t border-white/20 pt-6 pb-8 px-4 space-y-3">
         {/* Switch to Member View Button */}
         <button
           onClick={handleSwitchToMemberView}
@@ -131,11 +131,14 @@ const SideBar = ({ session }: { session: Session }) => {
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
+            className="flex-shrink-0"
           >
             <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
             <path d="M13.73 21a2 2 0 0 1-3.46 0" />
           </svg>
-          <span className={`${aileron.className} text-sm`}>
+          <span
+            className={`${aileron.className} text-[clamp(0.75rem,1.2vw,0.875rem)]`}
+          >
             Switch to Member View
           </span>
         </button>
@@ -156,12 +159,17 @@ const SideBar = ({ session }: { session: Session }) => {
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
+              className="flex-shrink-0"
             >
               <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
               <polyline points="16 17 21 12 16 7" />
               <line x1="21" y1="12" x2="9" y2="12" />
             </svg>
-            <span className={`${aileron.className}`}>Logout</span>
+            <span
+              className={`${aileron.className} text-[clamp(0.875rem,1.5vw,1rem)]`}
+            >
+              Logout
+            </span>
           </button>
         </form>
       </div>

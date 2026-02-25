@@ -86,11 +86,11 @@ export default function AuthModalContent({ type }: AuthModalContentProps) {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       {/* Header with Logo and Branding */}
-      <div className="text-center space-y-3">
+      <div className="text-center space-y-2">
         {/* Logo */}
-        <div className="flex justify-center mb-4">
+        <div className="flex justify-center">
           <div className="relative w-16 h-16">
             <Image
               src="/logos/filceblogo.svg"
@@ -119,28 +119,28 @@ export default function AuthModalContent({ type }: AuthModalContentProps) {
         </p>
 
         {/* Dynamic Title based on mode */}
-        <h3 className="text-2xl font-bold text-white mt-6">
+        <h3 className="text-xl font-bold text-white pt-2">
           {isSignIn ? "Welcome Back" : "Create an Account"}
         </h3>
       </div>
 
       {/* Error Message */}
       {submitError && (
-        <div className="p-3 text-sm text-red-400 bg-red-900/20 border border-red-800/30 rounded-lg">
+        <div className="py-2 px-3 text-sm text-red-400 bg-red-900/20 border border-red-800/30 rounded-lg">
           {submitError}
         </div>
       )}
 
       {/* Form */}
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
           {/* Email Field */}
           <FormField
             control={form.control}
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-white/90 text-sm font-medium">
+                <FormLabel className="text-white/90 text-xs font-medium">
                   E-mail
                 </FormLabel>
                 <FormControl>
@@ -148,16 +148,16 @@ export default function AuthModalContent({ type }: AuthModalContentProps) {
                     type="email"
                     placeholder="Enter E-mail"
                     className={cn(
-                      "bg-white/5 border-white/10 text-white",
-                      "placeholder:text-white/40",
+                      "bg-white/5 border-white/10 text-white text-sm",
+                      "placeholder:text-white/40 placeholder:text-sm",
                       "focus:border-[#F8EF30]/50 focus:ring-[#F8EF30]/20",
-                      "transition-colors"
+                      "transition-colors h-9"
                     )}
                     disabled={isLoading}
                     {...field}
                   />
                 </FormControl>
-                <FormMessage className="text-red-400" />
+                <FormMessage className="text-red-400 text-xs" />
               </FormItem>
             )}
           />
@@ -168,7 +168,7 @@ export default function AuthModalContent({ type }: AuthModalContentProps) {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-white/90 text-sm font-medium">
+                <FormLabel className="text-white/90 text-xs font-medium">
                   Password
                 </FormLabel>
                 <FormControl>
@@ -176,16 +176,16 @@ export default function AuthModalContent({ type }: AuthModalContentProps) {
                     type="password"
                     placeholder="Enter Password"
                     className={cn(
-                      "bg-white/5 border-white/10 text-white",
-                      "placeholder:text-white/40",
+                      "bg-white/5 border-white/10 text-white text-sm",
+                      "placeholder:text-white/40 placeholder:text-sm",
                       "focus:border-[#F8EF30]/50 focus:ring-[#F8EF30]/20",
-                      "transition-colors"
+                      "transition-colors h-9"
                     )}
                     disabled={isLoading}
                     {...field}
                   />
                 </FormControl>
-                <FormMessage className="text-red-400" />
+                <FormMessage className="text-red-400 text-xs" />
               </FormItem>
             )}
           />
@@ -197,7 +197,7 @@ export default function AuthModalContent({ type }: AuthModalContentProps) {
               name="confirmPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-white/90 text-sm font-medium">
+                  <FormLabel className="text-white/90 text-xs font-medium">
                     Confirm Password
                   </FormLabel>
                   <FormControl>
@@ -205,37 +205,19 @@ export default function AuthModalContent({ type }: AuthModalContentProps) {
                       type="password"
                       placeholder="Retype Password"
                       className={cn(
-                        "bg-white/5 border-white/10 text-white",
-                        "placeholder:text-white/40",
+                        "bg-white/5 border-white/10 text-white text-sm",
+                        "placeholder:text-white/40 placeholder:text-sm",
                         "focus:border-[#F8EF30]/50 focus:ring-[#F8EF30]/20",
-                        "transition-colors"
+                        "transition-colors h-9"
                       )}
                       disabled={isLoading}
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage className="text-red-400" />
+                  <FormMessage className="text-red-400 text-xs" />
                 </FormItem>
               )}
             />
-          )}
-
-          {/* Forgot Password Link (Sign In Only) */}
-          {isSignIn && (
-            <div className="text-right pt-1">
-              <button
-                type="button"
-                className="text-sm text-[#F8EF30] hover:text-[#F8EF30]/80 hover:underline transition-colors"
-                disabled={isLoading}
-                onClick={() => {
-                  closeAuthModal();
-                  // TODO: Implement forgot password flow
-                  // router.push('/forgot-password');
-                }}
-              >
-                Forgot password?
-              </button>
-            </div>
           )}
 
           {/* Submit Button */}
@@ -243,17 +225,18 @@ export default function AuthModalContent({ type }: AuthModalContentProps) {
             type="submit"
             disabled={isLoading}
             className={cn(
-              "w-full mt-6",
+              "w-full mt-4",
               "bg-gradient-to-r from-[#F8EF30] to-[#F8EF30]/90",
-              "text-[#1E1E1E] font-semibold",
+              "text-[#1E1E1E] font-semibold text-sm",
               "hover:from-[#F8EF30]/90 hover:to-[#F8EF30]/80",
               "active:scale-[0.98] transition-all duration-200",
-              "shadow-lg shadow-[#F8EF30]/10"
+              "shadow-lg shadow-[#F8EF30]/10",
+              "h-9"
             )}
           >
             {isLoading ? (
               <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                <Loader2 className="mr-2 h-3 w-3 animate-spin" />
                 Processing...
               </>
             ) : isSignIn ? (
@@ -266,8 +249,8 @@ export default function AuthModalContent({ type }: AuthModalContentProps) {
       </Form>
 
       {/* Switch Mode */}
-      <div className="pt-4 border-t border-white/10">
-        <p className="text-center text-white/70 text-sm">
+      <div className="pt-2">
+        <p className="text-center text-white/70 text-xs">
           {isSignIn ? "Don't have an account? " : "Already have an account? "}
           <button
             type="button"
@@ -279,34 +262,6 @@ export default function AuthModalContent({ type }: AuthModalContentProps) {
           </button>
         </p>
       </div>
-
-      {/* Terms (Sign Up Only) */}
-      {!isSignIn && (
-        <p className="text-xs text-white/50 text-center px-4">
-          By creating an account, you agree to our{" "}
-          <button
-            type="button"
-            className="text-[#F8EF30]/70 hover:text-[#F8EF30] hover:underline"
-            onClick={() => {
-              closeAuthModal();
-              // router.push('/terms');
-            }}
-          >
-            Terms of Service
-          </button>{" "}
-          and{" "}
-          <button
-            type="button"
-            className="text-[#F8EF30]/70 hover:text-[#F8EF30] hover:underline"
-            onClick={() => {
-              closeAuthModal();
-              // router.push('/privacy');
-            }}
-          >
-            Privacy Policy
-          </button>
-        </p>
-      )}
     </div>
   );
 }

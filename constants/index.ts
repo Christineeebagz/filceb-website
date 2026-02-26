@@ -1,6 +1,7 @@
 export const FIELD_NAMES = {
   email: "Email",
   password: "Password",
+  confirmPassword: "Confirm Password",
 
   firstName: "First Name",
   lastName: "Last Name",
@@ -9,14 +10,15 @@ export const FIELD_NAMES = {
   province: "Province",
   city: "City",
   businessName: "Business Name",
-  businessType: "Business Type",
+  businesstype: "Business Type",
   idUpload: "Upload ID",
   businessDocuments: "Upload Business Documents",
-};
+} as const;
 
 export const FIELD_TYPES = {
   email: "email",
   password: "password",
+  confirmPassword: "password",
   firstName: "text",
   lastName: "text",
   phone: "number",
@@ -24,16 +26,24 @@ export const FIELD_TYPES = {
   province: "text",
   city: "text",
   businessName: "text",
-  businessType: "text",
-};
+  businesstype: "text",
+} as const;
 
 export const adminSideBarLinks = [
-  {
-    route: "/admin",
-    text: "Home",
-  },
   {
     route: "/admin/users",
     text: "Users",
   },
+  {
+    route: "/admin/content",
+    text: "Content",
+  },
 ];
+
+export const BUSINESS_TYPES = [
+  "CORPORATION",
+  "SOLE PROPRIETORSHIP",
+  "PARTNERSHIP",
+  "COOPERATIVE",
+  "OTHERS",
+] as const;

@@ -1,9 +1,124 @@
 {
-  "id": "d4ce4419-1983-4e43-b322-5c047cf286ba",
+  "id": "892cceb4-7494-48ab-908e-171fb7df51f7",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
+    "public.posts": {
+      "name": "posts",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar(200)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "content": {
+          "name": "content",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "type": {
+          "name": "type",
+          "type": "post_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'TEXT'"
+        },
+        "media_url": {
+          "name": "media_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "embed_code": {
+          "name": "embed_code",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "status": {
+          "name": "status",
+          "type": "post_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'DRAFT'"
+        },
+        "author_id": {
+          "name": "author_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "published_at": {
+          "name": "published_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "order_index": {
+          "name": "order_index",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "default": 0
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "posts_author_id_users_id_fk": {
+          "name": "posts_author_id_users_id_fk",
+          "tableFrom": "posts",
+          "tableTo": "users",
+          "columnsFrom": [
+            "author_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "posts_id_unique": {
+          "name": "posts_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
     "public.users": {
       "name": "users",
       "schema": "",
@@ -69,9 +184,9 @@
           "primaryKey": false,
           "notNull": false
         },
-        "businessType": {
-          "name": "businessType",
-          "type": "businessType",
+        "businesstype": {
+          "name": "businesstype",
+          "type": "businesstype",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false
@@ -94,7 +209,7 @@
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
-          "default": "'PENDING'"
+          "default": "'UNSUBMITTED'"
         },
         "role": {
           "name": "role",
@@ -117,6 +232,12 @@
           "primaryKey": false,
           "notNull": false,
           "default": "now()"
+        },
+        "reference_num": {
+          "name": "reference_num",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},
@@ -144,8 +265,8 @@
     }
   },
   "enums": {
-    "public.businessType": {
-      "name": "businessType",
+    "public.businesstype": {
+      "name": "businesstype",
       "schema": "public",
       "values": [
         "CORPORATION",
@@ -153,6 +274,25 @@
         "PARTNERSHIP",
         "COOPERATIVE",
         "OTHERS"
+      ]
+    },
+    "public.post_status": {
+      "name": "post_status",
+      "schema": "public",
+      "values": [
+        "DRAFT",
+        "PUBLISHED",
+        "ARCHIVED"
+      ]
+    },
+    "public.post_type": {
+      "name": "post_type",
+      "schema": "public",
+      "values": [
+        "TEXT",
+        "IMAGE",
+        "LINK",
+        "EMBED"
       ]
     },
     "public.role": {
@@ -167,7 +307,9 @@
       "name": "status",
       "schema": "public",
       "values": [
+        "UNSUBMITTED",
         "PENDING",
+        "PRE-APPROVED",
         "APPROVED",
         "REJECTED"
       ]

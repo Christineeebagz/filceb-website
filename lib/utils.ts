@@ -10,24 +10,25 @@ export function cn(...inputs: ClassValue[]) {
 // .join("")string
 // .toUpperCase()
 
-export const getInitials = (name: string): string =>
-  name
-    .split(" ")
-    .map((part) => part[0])
-    .join("")
-    .toUpperCase()
-    .slice(0, 2);
-// export const getInitials = (email: string): string => {
-//   // Extract the name part before the @ symbol
-//   const namePart = email.split("@")[0];
+export const getInitials = (
+  firstName: string | null | undefined,
+  lastName: string | null | undefined
+): string => {
+  // Handle case where both names are missing
+  if (!firstName && !lastName) return "NEW";
 
-//   // Handle cases where name might be separated by dots or underscores
-//   const parts = namePart.split(/[._]/);
+  // Get first letter of each name (if they exist)
+  const firstInitial = firstName?.[0]?.toUpperCase() || "";
+  const lastInitial = lastName?.[0]?.toUpperCase() || "";
 
-//   // Get first letter of each part (max 2 initials)
-//   return parts
-//     .filter((part) => part.length > 0) // Filter out empty strings
-//     .slice(0, 2) // Take max 2 parts
-//     .map((part) => part[0].toUpperCase())
-//     .join("");
-// };
+  // Combine the initials
+  return `${firstInitial}${lastInitial}`;
+};
+
+// export const getInitials = (name: string): string =>
+//   name
+//     .split(" ")
+//     .map((part) => part[0])
+//     .join("")
+//     .toUpperCase()
+//     .slice(0, 2);

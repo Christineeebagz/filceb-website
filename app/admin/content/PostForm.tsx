@@ -93,6 +93,9 @@ export function PostForm({ post, mode }: PostFormProps) {
   // Determine if post is published
   const isPublished = post?.status === "PUBLISHED";
 
+  // Safe access to formData.type with default value
+  const currentType = formData.type || "TEXT";
+
   return (
     <form onSubmit={(e) => e.preventDefault()} className="space-y-6 max-w-2xl">
       {/* Title */}
@@ -118,7 +121,7 @@ export function PostForm({ post, mode }: PostFormProps) {
         </label>
         <select
           id="type"
-          value={formData.type}
+          value={currentType}
           onChange={(e) => handleChange("type", e.target.value as PostType)}
           className="w-full p-2 border rounded-md"
         >
@@ -133,7 +136,7 @@ export function PostForm({ post, mode }: PostFormProps) {
       <div>
         <label htmlFor="content" className="block text-sm font-medium mb-2">
           Content{" "}
-          {formData.type !== "TEXT" && "(Optional - Add text with your media)"}
+          {currentType !== "TEXT" && "(Optional - Add text with your media)"}
         </label>
         <textarea
           id="content"
@@ -142,23 +145,23 @@ export function PostForm({ post, mode }: PostFormProps) {
           onChange={(e) => handleChange("content", e.target.value)}
           className="w-full p-2 border rounded-md"
           placeholder={
-            formData.type === "TEXT"
+            currentType === "TEXT"
               ? "Enter post content"
               : "Enter accompanying text for your media (optional)"
           }
         />
-        {formData.type !== "TEXT" && (
+        {currentType !== "TEXT" && (
           <p className="text-sm text-gray-500 mt-1">
-            This text will appear alongside your {formData.type.toLowerCase()}
+            This text will appear alongside your {currentType.toLowerCase()}
           </p>
         )}
       </div>
 
       {/* Media URL - shown for IMAGE and LINK types */}
-      {(formData.type === "IMAGE" || formData.type === "LINK") && (
+      {(currentType === "IMAGE" || currentType === "LINK") && (
         <div>
           <label htmlFor="mediaUrl" className="block text-sm font-medium mb-2">
-            {formData.type === "IMAGE" ? "Image URL" : "Link URL"}
+            {currentType === "IMAGE" ? "Image URL" : "Link URL"}
           </label>
           <input
             id="mediaUrl"
@@ -167,7 +170,7 @@ export function PostForm({ post, mode }: PostFormProps) {
             onChange={(e) => handleChange("mediaUrl", e.target.value)}
             className="w-full p-2 border rounded-md"
             placeholder={
-              formData.type === "IMAGE"
+              currentType === "IMAGE"
                 ? "https://example.com/image.jpg"
                 : "https://example.com"
             }
@@ -176,7 +179,7 @@ export function PostForm({ post, mode }: PostFormProps) {
       )}
 
       {/* Embed Code - shown for EMBED type */}
-      {formData.type === "EMBED" && (
+      {currentType === "EMBED" && (
         <div>
           <label htmlFor="embedCode" className="block text-sm font-medium mb-2">
             Embed Code

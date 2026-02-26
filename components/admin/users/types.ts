@@ -4,17 +4,23 @@ export interface User {
   email: string;
   firstName: string | null;
   lastName: string | null;
-  businessName: string | null;
-  businesstype: string | null;
-  status: string;
-  role: string;
   phone: string | null;
   barangayAddress: string | null;
   province: string | null;
   city: string | null;
-  createdAt: string;
+  businessName: string | null;
+  businesstype: string | null;
+  status: string;
+  role: string;
   lastActivityDate: string;
+  createdAt: string;
   referenceNum: string | null;
+}
+
+// Extended type for modal that includes document fields
+export interface UserWithDocuments extends User {
+  idUpload: string | null;
+  businessDocuments: string | null;
 }
 
 export type SortField = keyof User;

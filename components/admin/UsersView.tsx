@@ -2,7 +2,12 @@
 "use client";
 
 import { useState, useMemo, useEffect, useRef } from "react";
-import { User, SortField, SortDirection } from "./users/types";
+import {
+  User,
+  UserWithDocuments,
+  SortField,
+  SortDirection,
+} from "./users/types";
 import { UsersTableFilters } from "./users/UsersTableFilters";
 import { UsersTable } from "./users/UsersTable";
 import { UsersTablePagination } from "./users/UsersTablePagination";
@@ -12,7 +17,9 @@ import { StatusChangeModal } from "./users/StatusChangeModal";
 import { UserDetailsModal } from "./UserDetailsModal";
 
 export default function UsersView() {
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [selectedUser, setSelectedUser] = useState<UserWithDocuments | null>(
+    null
+  );
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
@@ -359,7 +366,8 @@ export default function UsersView() {
         onStatusFilterClick={handleStatusFilterClick}
         onStatusChange={handleStatusChangeConfirm}
         onViewDetails={(user) => {
-          setSelectedUser(user);
+          // Cast the user to UserWithDocuments since the API response includes document fields
+          setSelectedUser(user as UserWithDocuments);
           setIsModalOpen(true);
         }}
         onToggleBusinessType={toggleBusinessType}

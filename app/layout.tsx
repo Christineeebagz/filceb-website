@@ -28,7 +28,9 @@ export const metadata: Metadata = {
   description:
     "Based in Cebu, our organization is more than a business club—it's a vibrant platform for collaboration and growth.",
   icons: {
-    icon: "/filceblogo.svg",
+    icon: "/logos/filceblogo.svg", // Changed from "/filceblogo.svg" to "/logos/filceblogo.svg"
+    // You can also add additional icon sizes if needed
+    apple: "/logos/filceblogo.svg",
   },
 };
 

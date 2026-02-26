@@ -1,3 +1,4 @@
+// components/AuthModalContent.tsx
 "use client";
 
 import { useState } from "react";
@@ -26,6 +27,17 @@ interface AuthModalContentProps {
   type: "SIGN_IN" | "SIGN_UP";
 }
 
+type SignInFormData = {
+  email: string;
+  password: string;
+};
+
+type SignUpFormData = {
+  email: string;
+  password: string;
+  confirmPassword: string;
+};
+
 export default function AuthModalContent({ type }: AuthModalContentProps) {
   const { closeAuthModal, openAuthModal } = useModal();
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -34,25 +46,24 @@ export default function AuthModalContent({ type }: AuthModalContentProps) {
   // Determine which schema and default values to use
   const isSignIn = type === "SIGN_IN";
   const schema = isSignIn ? signInSchema : signUpSchema;
-  const defaultValues = isSignIn
-    ? { email: "", password: "" }
-    : { email: "", password: "", confirmPassword: "" };
 
-  // Initialize form
-  const form = useForm({
+  // Create form with appropriate type
+  const form = useForm<SignInFormData | SignUpFormData>({
     resolver: zodResolver(schema),
-    defaultValues,
+    defaultValues: isSignIn
+      ? { email: "", password: "" }
+      : { email: "", password: "", confirmPassword: "" },
   });
 
   // Handle form submission
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: SignInFormData | SignUpFormData) => {
     setIsLoading(true);
     setSubmitError(null);
 
     try {
       const result = isSignIn
-        ? await signInWithCredentials(data)
-        : await signUp(data);
+        ? await signInWithCredentials(data as SignInFormData)
+        : await signUp(data as SignUpFormData);
 
       if (result.success) {
         toast.success(
@@ -82,7 +93,15 @@ export default function AuthModalContent({ type }: AuthModalContentProps) {
   const switchMode = () => {
     const newType = isSignIn ? "SIGN_UP" : "SIGN_IN";
     openAuthModal(newType);
-    form.reset(isSignIn ? defaultValues : { email: "", password: "" });
+
+    // Reset with the correct shape based on the new mode
+    if (isSignIn) {
+      // Switching to Sign Up
+      form.reset({ email: "", password: "", confirmPassword: "" });
+    } else {
+      // Switching to Sign In
+      form.reset({ email: "", password: "" });
+    }
   };
 
   return (

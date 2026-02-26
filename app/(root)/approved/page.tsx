@@ -1,4 +1,3 @@
-// app/(root)/approved/page.tsx
 import { auth } from "@/auth";
 import { getPublishedPosts } from "@/lib/actions/posts";
 import { FeedView } from "../../../components/status/approved/FeedView";
@@ -34,7 +33,7 @@ export default async function Approved({ searchParams }: ApprovedPageProps) {
 
         <div className="flex justify-center">
           <div className="w-full max-w-3xl">
-            {postsResult.success ? (
+            {postsResult.success && postsResult.data ? (
               <>
                 <FeedView
                   posts={postsResult.data}
@@ -54,7 +53,7 @@ export default async function Approved({ searchParams }: ApprovedPageProps) {
             ) : (
               <div className="bg-red-50 border border-red-200 rounded-lg p-4">
                 <p className="text-red-800">
-                  Error loading feed: {postsResult.error}
+                  {postsResult.error || "Failed to load posts"}
                 </p>
               </div>
             )}

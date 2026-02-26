@@ -1,13 +1,13 @@
 // components/admin/users/UsersTable.tsx
 "use client";
 
-import { User } from "./types";
+import { User, SortField } from "./types";
 import { UsersTableHeader } from "./UsersTableHeader";
 import { UsersTableRow } from "./UsersTableRow";
 
 interface UsersTableProps {
   users: User[];
-  sortField: string;
+  sortField: SortField; // Changed from string to SortField
   sortDirection: "asc" | "desc";
   selectedStatuses: string[];
   selectedBusinessTypes: string[];
@@ -16,7 +16,7 @@ interface UsersTableProps {
   businessTypeButtonRef: React.RefObject<HTMLButtonElement | null>;
   statusButtonRef: React.RefObject<HTMLButtonElement | null>;
   updatingStatus: Record<string, boolean>;
-  onSort: (field: any) => void;
+  onSort: (field: SortField) => void; // Changed from any to SortField
   onBusinessTypeFilterClick: () => void;
   onStatusFilterClick: () => void;
   onStatusChange: (userId: string, newStatus: string) => void;

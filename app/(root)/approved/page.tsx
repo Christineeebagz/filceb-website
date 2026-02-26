@@ -1,3 +1,4 @@
+// app/(root)/approved/page.tsx
 import { auth } from "@/auth";
 import { getPublishedPosts } from "@/lib/actions/posts";
 import { FeedView } from "../../../components/status/approved/FeedView";
@@ -6,15 +7,17 @@ import { Pagination } from "@/components/Pagination";
 export const dynamic = "force-dynamic";
 
 interface ApprovedPageProps {
-  searchParams?: {
+  searchParams?: Promise<{
     page?: string;
-  };
+  }>;
 }
 
 export default async function Approved({ searchParams }: ApprovedPageProps) {
   const session = await auth();
 
-  const rawPage = Number(searchParams?.page ?? "1");
+  // Await searchParams
+  const params = await searchParams;
+  const rawPage = Number(params?.page ?? "1");
   const currentPage = isNaN(rawPage) || rawPage < 1 ? 1 : rawPage;
 
   const pageSize = 10;

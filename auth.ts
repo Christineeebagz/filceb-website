@@ -74,10 +74,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
         if (freshUser.length > 0) {
           token.id = freshUser[0].id;
-          token.firstName = freshUser[0].firstName;
-          token.lastName = freshUser[0].lastName;
-          token.status = freshUser[0].status;
-          token.role = freshUser[0].role;
+          token.firstName = freshUser[0].firstName ?? "";
+          token.lastName = freshUser[0].lastName ?? "";
+          token.status = freshUser[0].status ?? "UNSUBMITTED";
+          token.role = freshUser[0].role ?? "USER";
         }
       }
 

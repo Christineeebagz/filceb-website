@@ -2,9 +2,10 @@
 import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 
-export default auth((req) => {
-  // Get the current path
-  const { pathname } = req.nextUrl;
+export default auth((req: any) => {
+  // Get the current path from req.url
+  const url = new URL(req.url);
+  const pathname = url.pathname;
 
   // Add pathname to headers so it can be accessed in layouts
   const requestHeaders = new Headers(req.headers);
@@ -29,7 +30,7 @@ export default auth((req) => {
   }
 
   // Only check auth for protected routes
-  const isAuthenticated = !!req.auth?.user;
+  const isAuthenticated = !!req.auth;
 
   if (!isAuthenticated) {
     // Redirect to signin with callback URL

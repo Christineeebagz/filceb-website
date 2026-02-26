@@ -5,6 +5,8 @@ import { users } from "./database/schema";
 import { eq } from "drizzle-orm";
 import { compare } from "bcryptjs";
 
+export const runtime = "nodejs";
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
   // 🔴 ADD THESE CRITICAL CONFIGS:
   trustHost: true, // Required for local development

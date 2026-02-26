@@ -8,7 +8,6 @@ const nextConfig: NextConfig = {
         hostname: "ik.imagekit.io",
         pathname: "**",
       },
-      // Add any other image hosts you need
     ],
     formats: ["image/avif", "image/webp"],
   },
@@ -19,6 +18,8 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true,
   },
   output: "standalone",
+  // Add this to handle bcryptjs in server components
+  serverExternalPackages: ["bcryptjs"],
 };
 
 export default nextConfig;

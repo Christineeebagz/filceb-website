@@ -31,14 +31,14 @@ export const signInSchema = z.object({
 
 export const registerSchema = z.object({
   email: z.string().email(),
-  firstName: z.string().min(1),
-  lastName: z.string().min(1),
-  phone: z.string().min(1),
-  barangayAddress: z.string().min(1),
-  province: z.string().min(1),
-  city: z.string().min(1),
-  businessName: z.string().min(1),
+  firstName: z.string().min(1, "First name is required"),
+  lastName: z.string().min(1, "Last name is required"),
+  phone: z.string().min(1, "Phone is required"),
+  barangayAddress: z.string().min(1, "Barangay address is required"),
+  province: z.string().min(1, "Province is required"),
+  city: z.string().min(1, "City is required"),
+  businessName: z.string().min(1, "Business name is required"),
   businesstype: z.enum(BUSINESS_TYPES),
-  idUpload: z.string(),
-  businessDocuments: z.string(),
+  idUpload: z.string().min(1, "ID Upload is required"),
+  businessDocuments: z.string().min(1, "Business document is required"),
 });

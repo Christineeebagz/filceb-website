@@ -1,4 +1,3 @@
-// components/AuthModalContent.tsx
 "use client";
 
 import { useState } from "react";
@@ -18,7 +17,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Loader2 } from "lucide-react";
+import { Loader2, Eye, EyeOff } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { aileron } from "@/lib/fonts";
@@ -42,6 +41,10 @@ export default function AuthModalContent({ type }: AuthModalContentProps) {
   const { closeAuthModal, openAuthModal } = useModal();
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  // State for password visibility
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   // Determine which schema and default values to use
   const isSignIn = type === "SIGN_IN";
@@ -102,6 +105,10 @@ export default function AuthModalContent({ type }: AuthModalContentProps) {
       // Switching to Sign In
       form.reset({ email: "", password: "" });
     }
+
+    // Reset password visibility states
+    setShowPassword(false);
+    setShowConfirmPassword(false);
   };
 
   return (
@@ -181,7 +188,7 @@ export default function AuthModalContent({ type }: AuthModalContentProps) {
             )}
           />
 
-          {/* Password Field */}
+          {/* Password Field with Eye Icon */}
           <FormField
             control={form.control}
             name="password"
@@ -191,25 +198,39 @@ export default function AuthModalContent({ type }: AuthModalContentProps) {
                   Password
                 </FormLabel>
                 <FormControl>
-                  <Input
-                    type="password"
-                    placeholder="Enter Password"
-                    className={cn(
-                      "bg-white/5 border-white/10 text-white text-sm",
-                      "placeholder:text-white/40 placeholder:text-sm",
-                      "focus:border-[#F8EF30]/50 focus:ring-[#F8EF30]/20",
-                      "transition-colors h-9"
-                    )}
-                    disabled={isLoading}
-                    {...field}
-                  />
+                  <div className="relative">
+                    <Input
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Enter Password"
+                      className={cn(
+                        "bg-white/5 border-white/10 text-white text-sm pr-10",
+                        "placeholder:text-white/40 placeholder:text-sm",
+                        "focus:border-[#F8EF30]/50 focus:ring-[#F8EF30]/20",
+                        "transition-colors h-9"
+                      )}
+                      disabled={isLoading}
+                      {...field}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-white/60 hover:text-[#F8EF30] transition-colors"
+                      tabIndex={-1}
+                    >
+                      {showPassword ? (
+                        <EyeOff className="h-4 w-4" />
+                      ) : (
+                        <Eye className="h-4 w-4" />
+                      )}
+                    </button>
+                  </div>
                 </FormControl>
                 <FormMessage className="text-red-400 text-xs" />
               </FormItem>
             )}
           />
 
-          {/* Confirm Password Field (Sign Up Only) */}
+          {/* Confirm Password Field with Eye Icon (Sign Up Only) */}
           {!isSignIn && (
             <FormField
               control={form.control}
@@ -220,18 +241,34 @@ export default function AuthModalContent({ type }: AuthModalContentProps) {
                     Confirm Password
                   </FormLabel>
                   <FormControl>
-                    <Input
-                      type="password"
-                      placeholder="Retype Password"
-                      className={cn(
-                        "bg-white/5 border-white/10 text-white text-sm",
-                        "placeholder:text-white/40 placeholder:text-sm",
-                        "focus:border-[#F8EF30]/50 focus:ring-[#F8EF30]/20",
-                        "transition-colors h-9"
-                      )}
-                      disabled={isLoading}
-                      {...field}
-                    />
+                    <div className="relative">
+                      <Input
+                        type={showConfirmPassword ? "text" : "password"}
+                        placeholder="Retype Password"
+                        className={cn(
+                          "bg-white/5 border-white/10 text-white text-sm pr-10",
+                          "placeholder:text-white/40 placeholder:text-sm",
+                          "focus:border-[#F8EF30]/50 focus:ring-[#F8EF30]/20",
+                          "transition-colors h-9"
+                        )}
+                        disabled={isLoading}
+                        {...field}
+                      />
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setShowConfirmPassword(!showConfirmPassword)
+                        }
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-white/60 hover:text-[#F8EF30] transition-colors"
+                        tabIndex={-1}
+                      >
+                        {showConfirmPassword ? (
+                          <EyeOff className="h-4 w-4" />
+                        ) : (
+                          <Eye className="h-4 w-4" />
+                        )}
+                      </button>
+                    </div>
                   </FormControl>
                   <FormMessage className="text-red-400 text-xs" />
                 </FormItem>

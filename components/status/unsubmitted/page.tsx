@@ -4,49 +4,71 @@
 import AuthForm from "@/components/AuthForm";
 import { registerSchema } from "@/lib/validations";
 import { register } from "@/lib/actions/auth";
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { StatusMessage } from "../StatusMessage";
+import { UnsubmittedConfirmationModal } from "../UnsubmittedConfirmationModal";
 
 const UnsubmittedStatus = () => {
   const router = useRouter();
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [pendingData, setPendingData] = useState<any>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleRegister = async (
-    data: any
-  ): Promise<{ success: boolean; error?: string }> => {
+  // This function will be called by AuthForm when user submits
+  const handleFormSubmit = async (data: any) => {
+    // Instead of submitting directly, store data and show confirmation
+    setPendingData(data);
+    setShowConfirmation(true);
+    return { success: true }; // Return success to prevent form from submitting
+  };
+
+  // This function handles the actual submission after confirmation
+  const handleConfirmSubmit = async () => {
+    if (!pendingData) return;
+
+    setIsSubmitting(true);
     try {
-      console.log("Unsubmitted status - data received:", data);
-      const result = await register(data);
+      console.log("Submitting registration data:", pendingData);
+      const result = await register(pendingData);
 
       if (result.success) {
         toast.success("Registration completed successfully!");
+        setShowConfirmation(false);
 
         // Force a complete page reload to get fresh session data
         setTimeout(() => {
           window.location.href = "/";
         }, 1000);
-
-        return { success: true };
       } else {
         toast.error(result.error || "Registration failed");
-        return { success: false, error: result.error };
+        setShowConfirmation(false);
       }
     } catch (error: any) {
       console.error("Registration error:", error);
       toast.error(error.message || "An unexpected error occurred");
-      return { success: false, error: error.message };
+      setShowConfirmation(false);
+    } finally {
+      setIsSubmitting(false);
+      setPendingData(null);
     }
   };
 
+  const handleCloseModal = () => {
+    setShowConfirmation(false);
+    // Optionally clear pending data if user cancels
+    // setPendingData(null);
+  };
+
   return (
-    <div className="min-h-screen ">
-      <div className="max-w-6xl mx-auto ">
+    <div className="min-h-screen py-12">
+      <div className="max-w-6xl mx-auto px-4">
         {/* Status Message */}
         <StatusMessage
           title="Welcome to the FilCeb Community!"
           status="Unsubmitted"
-          statusColor="#8C52FF" // Purple for unsubmitted
+          statusColor="#8C52FF"
           comment="Thank you for signing up!"
           instruction="To activate your account and get full access to our network, please finish setting up your profile by completing the application form below."
           closing="We're excited to welcome you officially into our community."
@@ -54,32 +76,36 @@ const UnsubmittedStatus = () => {
         />
 
         {/* Registration Form */}
-        <div className="mt-8 max-w-2xl mx-auto">
-          <div className="backdrop-blur-sm rounded-2xl p-8 mb-24 border border-gray-200">
-            <h2 className="text-2xl font-bold text-[#1E1E1E] mb-6 text-center">
-              Complete Your Application
-            </h2>
-            <AuthForm
-              type="REGISTER"
-              schema={registerSchema}
-              defaultValues={{
-                email: "",
-                firstName: "",
-                lastName: "",
-                phone: "",
-                barangayAddress: "",
-                province: "",
-                city: "",
-                businessName: "",
-                businesstype: "",
-                idUpload: "",
-                businessDocuments: "",
-              }}
-              onSubmit={handleRegister}
-            />
-          </div>
+        <div className="mt-8 max-w-4xl mx-auto">
+          <AuthForm
+            type="REGISTER"
+            schema={registerSchema}
+            defaultValues={{
+              email: "",
+              firstName: "",
+              lastName: "",
+              phone: "",
+              barangayAddress: "",
+              province: "",
+              city: "",
+              businessName: "",
+              businesstype: "",
+              idUpload: "",
+              businessDocuments: "",
+            }}
+            onSubmit={handleFormSubmit}
+          />
         </div>
       </div>
+
+      {/* Confirmation Modal */}
+      <UnsubmittedConfirmationModal
+        isOpen={showConfirmation}
+        onClose={handleCloseModal}
+        onConfirm={handleConfirmSubmit}
+        formData={pendingData || {}}
+        isSubmitting={isSubmitting}
+      />
     </div>
   );
 };

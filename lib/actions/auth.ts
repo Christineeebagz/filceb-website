@@ -1,3 +1,4 @@
+//lib/actions/auth.ts
 "use server";
 import { eq } from "drizzle-orm";
 import { db } from "@/database/drizzle";
@@ -8,6 +9,8 @@ import { revalidatePath } from "next/cache";
 import { AuthCredentials } from "@/types";
 import { compare } from "bcryptjs";
 import type { BusinessType } from "@/lib/validations";
+import { signOut } from "@/auth";
+import { redirect } from "next/navigation";
 
 // lib/actions/auth.ts - Update the register function
 export const register = async (params: {

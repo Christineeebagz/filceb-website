@@ -1,3 +1,4 @@
+//auth.ts
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { db } from "./database/drizzle";
@@ -8,7 +9,6 @@ import { compare } from "bcryptjs";
 export const runtime = "nodejs";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  // 🔴 ADD THESE CRITICAL CONFIGS:
   trustHost: true, // Required for local development
   basePath: "/api/auth", // Explicitly set auth path
 

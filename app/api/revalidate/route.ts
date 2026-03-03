@@ -1,3 +1,4 @@
+//app/api/revalidate/route.ts
 import { revalidatePath, revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 

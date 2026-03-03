@@ -4,7 +4,7 @@ import { Session } from "next-auth";
 import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import React from "react";
-import { handleSignOut } from "@/app/actions/auth";
+import { signOut } from "next-auth/react";
 import { aileron } from "@/lib/fonts";
 
 const SideBar = ({ session }: { session: Session }) => {
@@ -144,34 +144,32 @@ const SideBar = ({ session }: { session: Session }) => {
         </button>
 
         {/* Sign Out Button */}
-        <form action={handleSignOut} className="w-full">
-          <button
-            type="submit"
-            className="w-full px-4 py-3 rounded-lg bg-[#F8EF30] text-[#1E1E1E] hover:bg-[#F0E820] transition-all duration-200 flex items-center gap-3 justify-center font-bold group"
+        <button
+          onClick={() => signOut({ callbackUrl: "/" })}
+          className="w-full px-4 py-3 rounded-lg bg-[#F8EF30] text-[#1E1E1E] hover:bg-[#F0E820] transition-all duration-200 flex items-center gap-3 justify-center font-bold group"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="flex-shrink-0"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="flex-shrink-0"
-            >
-              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-              <polyline points="16 17 21 12 16 7" />
-              <line x1="21" y1="12" x2="9" y2="12" />
-            </svg>
-            <span
-              className={`${aileron.className} text-[clamp(0.875rem,1.5vw,1rem)]`}
-            >
-              Logout
-            </span>
-          </button>
-        </form>
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+            <polyline points="16 17 21 12 16 7" />
+            <line x1="21" y1="12" x2="9" y2="12" />
+          </svg>
+          <span
+            className={`${aileron.className} text-[clamp(0.875rem,1.5vw,1rem)]`}
+          >
+            Logout
+          </span>
+        </button>
       </div>
     </div>
   );

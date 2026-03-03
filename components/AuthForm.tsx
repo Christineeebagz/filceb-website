@@ -283,7 +283,6 @@ const AuthForm = <T extends FieldValues>({
                                 )}
                                 value={formField.value as string}
                                 isInvalid={showError}
-                                fieldName={FIELD_DISPLAY_NAMES[field] || field}
                               />
                             ) : field === "businesstype" ? (
                               <Select

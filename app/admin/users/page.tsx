@@ -8,7 +8,6 @@ const page = () => {
         <h2 className="text-xl font-semibold">All Users</h2>
       </div>
       <div className="mt-7 w-full overflow-hidden">
-        <p>Table</p>
         <UsersView />
       </div>
     </section>

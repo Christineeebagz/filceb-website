@@ -56,28 +56,45 @@ export function UsersTableRow({
           disabled={updatingStatus[user.id]}
         >
           <SelectTrigger
-            className="w-[140px] h-8 border-gray-300"
+            className="w-35 h-8 border-gray-300 bg-white" // Added bg-white here
             style={{
-              backgroundColor: statusColor.bg,
+              backgroundColor: statusColor.bg, // This will be overridden by bg-white if there's a conflict
               color: statusColor.text,
             }}
           >
             <SelectValue />
           </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="UNSUBMITTED" className="text-[#8C52FF]">
+          <SelectContent className="bg-white border-gray-300">
+            {" "}
+            {/* Added bg-white here */}
+            <SelectItem
+              value="UNSUBMITTED"
+              className="text-[#8C52FF] hover:bg-gray-100"
+            >
               UNSUBMITTED
             </SelectItem>
-            <SelectItem value="PENDING" className="text-[#FF751F]">
+            <SelectItem
+              value="PENDING"
+              className="text-[#FF751F] hover:bg-gray-100"
+            >
               PENDING
             </SelectItem>
-            <SelectItem value="PRE-APPROVED" className="text-[#D7AC00]">
+            <SelectItem
+              value="PRE-APPROVED"
+              className="text-[#D7AC00] hover:bg-gray-100"
+            >
               PRE-APPROVED
             </SelectItem>
-            <SelectItem value="APPROVED" className="text-[#1F9254]">
+            <SelectItem
+              value="APPROVED"
+              className="text-[#1F9254] hover:bg-gray-100"
+            >
               APPROVED
             </SelectItem>
-            <SelectItem value="REJECTED" className="text-[#FF3130]">
+            <SelectItem
+              value="REJECTED"
+              className="text-[#FF3130] hover:bg-gray-100"
+            >
               REJECTED
             </SelectItem>
           </SelectContent>

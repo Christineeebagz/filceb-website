@@ -27,6 +27,8 @@ interface UsersTableFiltersProps {
   onToggleAdvancedFilters: () => void;
   onFilterChange: (key: string, value: string) => void;
   onClearFilters: () => void;
+  selectedStatuses: string[];
+  onOpenStatusFilter: () => void;
 }
 
 export function UsersTableFilters({
@@ -40,6 +42,8 @@ export function UsersTableFilters({
   onToggleAdvancedFilters,
   onFilterChange,
   onClearFilters,
+  selectedStatuses,
+  onOpenStatusFilter,
 }: UsersTableFiltersProps) {
   return (
     <>
@@ -55,24 +59,36 @@ export function UsersTableFilters({
               <SelectTrigger className="w-20 bg-white border-gray-300 text-[#1E1E1E]">
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="5">5</SelectItem>
-                <SelectItem value="10">10</SelectItem>
-                <SelectItem value="25">25</SelectItem>
-                <SelectItem value="50">50</SelectItem>
+              <SelectContent className="bg-white border-gray-300">
+                <SelectItem value="5" className="hover:bg-gray-100">
+                  5
+                </SelectItem>
+                <SelectItem value="10" className="hover:bg-gray-100">
+                  10
+                </SelectItem>
+                <SelectItem value="25" className="hover:bg-gray-100">
+                  25
+                </SelectItem>
+                <SelectItem value="50" className="hover:bg-gray-100">
+                  50
+                </SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           <Button
             variant="ghost"
+            onClick={onOpenStatusFilter}
             className="text-[#1E1E1E] hover:bg-yellow-200 font-medium"
           >
-            Profiles
+            Filter Status
+            {selectedStatuses.length > 0 && (
+              <span className="ml-2 w-2 h-2 bg-black rounded-full inline-block" />
+            )}
           </Button>
 
           {/* Main Search */}
-          <div className="flex-1 min-w-[300px] max-w-xl flex gap-2">
+          <div className="flex-1 min-w-75 max-w-xl flex gap-2">
             <Input
               placeholder="Search across all fields..."
               value={mainSearch}

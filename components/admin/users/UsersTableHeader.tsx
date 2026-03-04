@@ -57,19 +57,19 @@ export function UsersTableHeader({
   return (
     <thead className="sticky top-0 z-10">
       <tr className="bg-white border-b border-gray-200">
-        <th className="text-left p-4 min-w-[150px] text-[#1E1E1E] font-bold">
+        <th className="text-left p-4 min-w-37.5 text-[#1E1E1E] font-bold">
           <SortableHeader field="email">Email</SortableHeader>
         </th>
-        <th className="text-left p-4 min-w-[120px] text-[#1E1E1E] font-bold">
+        <th className="text-left p-4 min-w-30 text-[#1E1E1E] font-bold">
           <SortableHeader field="firstName">First Name</SortableHeader>
         </th>
-        <th className="text-left p-4 min-w-[120px] text-[#1E1E1E] font-bold">
+        <th className="text-left p-4 min-w-30 text-[#1E1E1E] font-bold">
           <SortableHeader field="lastName">Last Name</SortableHeader>
         </th>
-        <th className="text-left p-4 min-w-[180px] text-[#1E1E1E] font-bold">
+        <th className="text-left p-4 min-w-45 text-[#1E1E1E] font-bold">
           <SortableHeader field="businessName">Business Name</SortableHeader>
         </th>
-        <th className="text-left p-4 min-w-[140px] text-[#1E1E1E] font-bold">
+        <th className="text-left p-4 min-w-35 text-[#1E1E1E] font-bold">
           <div className="flex items-center gap-1">
             <span>Business Type</span>
             <div className="relative inline-block">
@@ -88,28 +88,10 @@ export function UsersTableHeader({
             </div>
           </div>
         </th>
-        <th className="text-left p-4 min-w-[140px] text-[#1E1E1E] font-bold">
-          <div className="flex items-center gap-1">
-            <span>Status</span>
-            <div className="relative inline-block">
-              <Button
-                ref={statusButtonRef}
-                variant="ghost"
-                size="sm"
-                onClick={onStatusFilterClick}
-                className="h-6 w-6 p-0 hover:bg-gray-200 rounded-full"
-              >
-                <Filter className="h-3 w-3 text-[#1E1E1E]" />
-              </Button>
-              {selectedStatuses.length > 0 && (
-                <div className="absolute -top-1 -right-1 w-2 h-2 bg-[#F8EF26] rounded-full" />
-              )}
-            </div>
-          </div>
+        <th className="text-left p-4 min-w-35 text-[#1E1E1E] font-bold">
+          <span>Status</span>
         </th>
-        <th className="text-left p-4 w-[40px] text-[#1E1E1E] font-bold">
-          Actions
-        </th>
+        <th className="text-left p-4 w-10 text-[#1E1E1E] font-bold">Actions</th>
       </tr>
     </thead>
   );

@@ -61,7 +61,7 @@ export function InfoSection({ title, items, className }: InfoSectionProps) {
               </span>
               <div
                 className={cn(
-                  "text-right max-w-[60%] break-words",
+                  "text-right max-w-[60%] wrap-break-word",
                   itemHasValue
                     ? "text-[#1E1E1E] font-medium"
                     : "text-gray-600 italic"

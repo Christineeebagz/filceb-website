@@ -10,7 +10,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Eye } from "lucide-react";
-import { User, STATUS_COLORS } from "./types";
+import { User, STATUS_COLORS } from "../components/types";
 
 interface UsersTableRowProps {
   user: User;

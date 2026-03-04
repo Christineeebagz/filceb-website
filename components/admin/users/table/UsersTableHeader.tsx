@@ -1,9 +1,8 @@
-// components/admin/users/UsersTableHeader.tsx
 "use client";
 
 import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronUp, Filter } from "lucide-react";
-import { SortField, SortDirection } from "./types";
+import { SortField, SortDirection } from "../components/types";
 import { BUSINESS_TYPES } from "@/constants";
 
 interface UsersTableHeaderProps {
@@ -42,7 +41,7 @@ export function UsersTableHeader({
   }) => (
     <button
       onClick={() => onSort(field)}
-      className="flex items-center gap-1 font-medium text-left text-[#1E1E1E] hover:opacity-80 transition-colors"
+      className="flex items-center gap-1 font-bold text-left text-[#1E1E1E] hover:opacity-80 transition-colors"
     >
       {children}
       {sortField === field &&
@@ -70,7 +69,7 @@ export function UsersTableHeader({
           <SortableHeader field="businessName">Business Name</SortableHeader>
         </th>
         <th className="text-left p-4 min-w-35 text-[#1E1E1E] font-bold">
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1 font-bold">
             <span>Business Type</span>
             <div className="relative inline-block">
               <Button
@@ -89,9 +88,25 @@ export function UsersTableHeader({
           </div>
         </th>
         <th className="text-left p-4 min-w-35 text-[#1E1E1E] font-bold">
-          <span>Status</span>
+          <div className="flex items-center gap-1 font-bold">
+            <span>Status</span>
+            <div className="relative inline-block">
+              <Button
+                ref={statusButtonRef}
+                variant="ghost"
+                size="sm"
+                onClick={onStatusFilterClick}
+                className="h-6 w-6 p-0 hover:bg-gray-200 rounded-full"
+              >
+                <Filter className="h-3 w-3 text-[#1E1E1E]" />
+              </Button>
+              {selectedStatuses.length > 0 && (
+                <div className="absolute -top-1 -right-1 w-2 h-2 bg-[#F8EF26] rounded-full" />
+              )}
+            </div>
+          </div>
         </th>
-        <th className="text-left p-4 w-10 text-[#1E1E1E] font-bold">Actions</th>
+        <th className="text-left p-4 w-15 text-[#1E1E1E] font-bold">Actions</th>
       </tr>
     </thead>
   );

@@ -2,7 +2,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { STATUS_COLORS } from "./types";
+import { STATUS_COLORS } from "../components/types";
 
 interface StatusChangeModalProps {
   isOpen: boolean;

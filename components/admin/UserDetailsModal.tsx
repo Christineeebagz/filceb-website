@@ -1,12 +1,12 @@
 "use client";
 
 import { X, ChevronDown } from "lucide-react";
-import { UserWithDocuments } from "./users/types";
-import { InfoSection } from "./users/InfoSection";
-import { PaymentSection } from "./users/PaymentSection";
-import { FileViewer } from "./users/FileViewer";
-import { AccountInfo } from "./users/AccountInfo";
-import { Legend } from "./users/Legend";
+import { UserWithDocuments } from "./users/components/types";
+import { InfoSection } from "./users/components/InfoSection";
+import { PaymentSection } from "./users/components/PaymentSection";
+import { FileViewer } from "./users/components/FileViewer";
+import { AccountInfo } from "./users/components/AccountInfo";
+import { Legend } from "./users/components/Legend";
 import {
   Select,
   SelectContent,
@@ -176,7 +176,7 @@ export function UserDetailsModal({
                     <SelectValue className="hidden" />
                   </SelectTrigger>
 
-                  <SelectContent className="bg-white border border-gray-200 shadow-lg z-[100]">
+                  <SelectContent className="bg-white border border-gray-200 shadow-lg z-100">
                     {STATUS_OPTIONS.map((status) => {
                       const color = STATUS_COLORS[status];
                       const isCurrent = status === user.status;
@@ -254,7 +254,7 @@ export function UserDetailsModal({
 
       {/* ── Inline confirmation overlay ─────────────────────────────── */}
       {showConfirm && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-60 flex items-center justify-center p-4">
           <div
             className="absolute inset-0 bg-black/50"
             onClick={handleCancel}

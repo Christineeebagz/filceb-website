@@ -1,7 +1,7 @@
 // components/admin/users/UsersTable.tsx
 "use client";
 
-import { User, SortField } from "./types";
+import { User, SortField } from "../components/types";
 import { UsersTableHeader } from "./UsersTableHeader";
 import { UsersTableRow } from "./UsersTableRow";
 

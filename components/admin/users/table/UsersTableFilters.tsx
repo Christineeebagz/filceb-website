@@ -76,16 +76,9 @@ export function UsersTableFilters({
             </Select>
           </div>
 
-          <Button
-            variant="ghost"
-            onClick={onOpenStatusFilter}
-            className="text-[#1E1E1E] hover:bg-yellow-200 font-medium"
-          >
+          <span className="text-[#1E1E1E] hover:bg-yellow-200 font-medium">
             Filter Status
-            {selectedStatuses.length > 0 && (
-              <span className="ml-2 w-2 h-2 bg-black rounded-full inline-block" />
-            )}
-          </Button>
+          </span>
 
           {/* Main Search */}
           <div className="flex-1 min-w-75 max-w-xl flex gap-2">

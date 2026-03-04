@@ -9,7 +9,13 @@ export default async function AdminPostsPage() {
   return (
     <div className="container mx-auto p-6">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Manage Posts</h1>
+        <h1 className="text-3xl font-bold">Manage Content</h1>
+        <h2
+          className="font-bold text-[12px]"
+          style={{ fontFamily: "Times New Roman, serif" }}
+        >
+          Create, view, and manage all posts for the community page.
+        </h2>
         <Button asChild>
           <Link href="/admin/content/posts/new">Create New Post</Link>
         </Button>

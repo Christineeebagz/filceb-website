@@ -19,15 +19,14 @@ const Layout = async ({ children }: { children: ReactNode }) => {
     redirect("/");
   }
 
-  // Temporary debug code in your component
-  console.log("Admin session object:", session);
-
   return (
     <main className="flex min-h-screen w-full flex-row">
       <SideBar session={session} />
-      <div className="flex-1 flex flex-col relative">
+      <div className="flex-1 flex flex-col relative overflow-hidden">
         <Header session={session} />
-        <div className="flex-1">{children}</div>
+        <div className="flex-1 overflow-auto p-6">
+          <div className="min-w-0 max-w-full">{children}</div>
+        </div>
         <Toaster />
       </div>
     </main>

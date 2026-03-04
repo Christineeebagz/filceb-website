@@ -1,38 +1,20 @@
-// app/admin/page.tsx
+// app/admin/users/page.tsx
+import UsersView from "@/components/admin/UsersView";
 import React from "react";
-import { redirect } from "next/navigation";
-import { auth } from "@/auth";
 
-const Page = async () => {
-  const session = await auth();
-
-  // Double protection - also check role in page
-  if (!session?.user?.id || session.user.role !== "ADMIN") {
-    redirect("/");
-  }
-
+const page = () => {
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Admin Dashboard</h1>
-      <p>Welcome to the admin panel, {session.user.name}!</p>
-      <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        <div className="p-4 border rounded-lg">
-          <h3 className="font-semibold">User Management</h3>
-          <p className="text-sm text-gray-600">
-            Manage users and their permissions
-          </p>
-        </div>
-        <div className="p-4 border rounded-lg">
-          <h3 className="font-semibold">Application Review</h3>
-          <p className="text-sm text-gray-600">Review pending registrations</p>
-        </div>
-        <div className="p-4 border rounded-lg">
-          <h3 className="font-semibold">System Settings</h3>
-          <p className="text-sm text-gray-600">Configure system preferences</p>
+    <section className="w-full rounded-2xl bg-white p-7 overflow-hidden">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <h2 className="text-xl font-semibold">All Users</h2>
+      </div>
+      <div className="mt-7 w-full overflow-x-auto">
+        <div className="min-w-250 lg:min-w-full">
+          <UsersView />
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
-export default Page;
+export default page;

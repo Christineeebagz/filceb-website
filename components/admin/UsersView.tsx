@@ -7,12 +7,13 @@ import {
   UserWithDocuments,
   SortField,
   SortDirection,
-} from "./users/types";
-import { UsersTableFilters } from "./users/UsersTableFilters";
-import { UsersTable } from "./users/UsersTable";
-import { UsersTablePagination } from "./users/UsersTablePagination";
-import { StatusFilterModal } from "./users/StatusFilterModal";
-import { StatusChangeModal } from "./users/StatusChangeModal";
+} from "./users/components/types";
+import { UsersTableFilters } from "./users/table/UsersTableFilters";
+import { UsersTable } from "./users/table/UsersTable";
+import { UsersTablePagination } from "./users/table/UsersTablePagination";
+import { BusinessTypeFilterDropdown } from "./users/table/BusinessTypeFilterDropdown";
+import { StatusFilterDropdown } from "./users/table/StatusFilterDropdown";
+import { StatusChangeModal } from "./users/table/StatusChangeModal";
 import { UserDetailsModal } from "./UserDetailsModal";
 
 export default function UsersView() {
@@ -24,9 +25,8 @@ export default function UsersView() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
-
   const businessTypeButtonRef = useRef<HTMLButtonElement>(null);
+  const statusButtonRef = useRef<HTMLButtonElement>(null);
 
   const [confirmModal, setConfirmModal] = useState({
     isOpen: false,
@@ -56,11 +56,14 @@ export default function UsersView() {
   const [selectedBusinessTypes, setSelectedBusinessTypes] = useState<string[]>(
     []
   );
+  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
   const [showBusinessTypeFilter, setShowBusinessTypeFilter] = useState(false);
+  const [showStatusFilter, setShowStatusFilter] = useState(false);
   const [businessTypePosition, setBusinessTypePosition] = useState({
     top: 0,
     left: 0,
   });
+  const [statusPosition, setStatusPosition] = useState({ top: 0, left: 0 });
 
   // ==============================
   // FETCH USERS
@@ -95,6 +98,30 @@ export default function UsersView() {
       );
     }
 
+    // Apply advanced filters if any
+    if (filters.email) {
+      filtered = filtered.filter((user) =>
+        user.email?.toLowerCase().includes(filters.email.toLowerCase())
+      );
+    }
+    if (filters.firstName) {
+      filtered = filtered.filter((user) =>
+        user.firstName?.toLowerCase().includes(filters.firstName.toLowerCase())
+      );
+    }
+    if (filters.lastName) {
+      filtered = filtered.filter((user) =>
+        user.lastName?.toLowerCase().includes(filters.lastName.toLowerCase())
+      );
+    }
+    if (filters.businessName) {
+      filtered = filtered.filter((user) =>
+        user.businessName
+          ?.toLowerCase()
+          .includes(filters.businessName.toLowerCase())
+      );
+    }
+
     if (selectedStatuses.length > 0) {
       filtered = filtered.filter((user) =>
         selectedStatuses.includes(user.status)
@@ -119,6 +146,7 @@ export default function UsersView() {
   }, [
     users,
     mainSearch,
+    filters,
     selectedStatuses,
     selectedBusinessTypes,
     sortField,
@@ -133,7 +161,53 @@ export default function UsersView() {
   }, [filteredAndSortedUsers, currentPage, itemsPerPage]);
 
   // ==============================
-  // STATUS FILTER TOGGLE
+  // UPDATE POSITIONS
+  // ==============================
+  useEffect(() => {
+    if (showBusinessTypeFilter && businessTypeButtonRef.current) {
+      const rect = businessTypeButtonRef.current.getBoundingClientRect();
+      setBusinessTypePosition({
+        top: rect.bottom + window.scrollY,
+        left: rect.left + window.scrollX,
+      });
+    }
+  }, [showBusinessTypeFilter]);
+
+  useEffect(() => {
+    if (showStatusFilter && statusButtonRef.current) {
+      const rect = statusButtonRef.current.getBoundingClientRect();
+      setStatusPosition({
+        top: rect.bottom + window.scrollY,
+        left: rect.left + window.scrollX,
+      });
+    }
+  }, [showStatusFilter]);
+
+  // Handle window scroll to update positions
+  useEffect(() => {
+    const handleScroll = () => {
+      if (showBusinessTypeFilter && businessTypeButtonRef.current) {
+        const rect = businessTypeButtonRef.current.getBoundingClientRect();
+        setBusinessTypePosition({
+          top: rect.bottom + window.scrollY,
+          left: rect.left + window.scrollX,
+        });
+      }
+      if (showStatusFilter && statusButtonRef.current) {
+        const rect = statusButtonRef.current.getBoundingClientRect();
+        setStatusPosition({
+          top: rect.bottom + window.scrollY,
+          left: rect.left + window.scrollX,
+        });
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [showBusinessTypeFilter, showStatusFilter]);
+
+  // ==============================
+  // FILTER TOGGLES
   // ==============================
   const toggleStatus = (status: string) => {
     setSelectedStatuses((prev) =>
@@ -142,6 +216,23 @@ export default function UsersView() {
         : [...prev, status]
     );
     setCurrentPage(1);
+  };
+
+  const toggleBusinessType = (type: string) => {
+    setSelectedBusinessTypes((prev) =>
+      prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type]
+    );
+    setCurrentPage(1);
+  };
+
+  const handleBusinessTypeFilterClick = () => {
+    setShowBusinessTypeFilter(!showBusinessTypeFilter);
+    setShowStatusFilter(false);
+  };
+
+  const handleStatusFilterClick = () => {
+    setShowStatusFilter(!showStatusFilter);
+    setShowBusinessTypeFilter(false);
   };
 
   // ==============================
@@ -186,10 +277,6 @@ export default function UsersView() {
   // ==============================
   // STATUS CHANGE FROM MODAL
   // ==============================
-  // This is the handler passed to UserDetailsModal.
-  // It calls the API directly and updates both the users list
-  // and the selectedUser so the badge in the modal reflects
-  // the new status immediately after confirmation.
   const handleModalStatusChange = async (
     userId: string,
     newStatus: string
@@ -202,21 +289,36 @@ export default function UsersView() {
 
     if (!response.ok) throw new Error("Failed to update status");
 
-    // Update the users list so the table reflects the change
     setUsers((prev) =>
       prev.map((u) => (u.id === userId ? { ...u, status: newStatus } : u))
     );
 
-    // Update selectedUser so the modal header badge updates immediately
     setSelectedUser((prev) =>
       prev && prev.id === userId ? { ...prev, status: newStatus } : prev
     );
   };
 
+  const clearFilters = () => {
+    setSelectedStatuses([]);
+    setSelectedBusinessTypes([]);
+    setMainSearch("");
+    setFilters({
+      email: "",
+      firstName: "",
+      lastName: "",
+      businessName: "",
+    });
+    setCurrentPage(1);
+  };
+
+  const handleOpenStatusFilter = () => {
+    setShowStatusFilter(true);
+  };
+
   if (loading) return <div className="p-6">Loading users...</div>;
 
   return (
-    <div className="w-full rounded-2xl overflow-hidden border border-gray-200 bg-white">
+    <div className="w-full rounded-2xl border border-gray-200 bg-white overflow-visible">
       {error && (
         <div className="bg-red-50 text-red-600 px-6 py-4 text-sm">{error}</div>
       )}
@@ -224,9 +326,16 @@ export default function UsersView() {
       <UsersTableFilters
         itemsPerPage={itemsPerPage}
         mainSearch={mainSearch}
-        showAdvancedFilters={false}
-        filters={{ email: "", firstName: "", lastName: "", businessName: "" }}
-        hasActiveFilters={selectedStatuses.length > 0}
+        showAdvancedFilters={showAdvancedFilters}
+        filters={filters}
+        hasActiveFilters={
+          selectedStatuses.length > 0 ||
+          selectedBusinessTypes.length > 0 ||
+          Object.values(filters).some((v) => v !== "") ||
+          mainSearch !== ""
+        }
+        selectedStatuses={selectedStatuses}
+        onOpenStatusFilter={handleOpenStatusFilter}
         onItemsPerPageChange={(value) => {
           setItemsPerPage(parseInt(value));
           setCurrentPage(1);
@@ -235,46 +344,82 @@ export default function UsersView() {
           setMainSearch(value);
           setCurrentPage(1);
         }}
-        onToggleAdvancedFilters={() => {}}
-        onFilterChange={() => {}}
-        onClearFilters={() => {
+        onToggleAdvancedFilters={() =>
+          setShowAdvancedFilters(!showAdvancedFilters)
+        }
+        onFilterChange={(key, value) => {
+          setFilters((prev) => ({ ...prev, [key]: value }));
+          setCurrentPage(1);
+        }}
+        onClearFilters={clearFilters}
+      />
+
+      <div className="overflow-x-auto">
+        <div className="min-w-[1200px]">
+          <UsersTable
+            users={paginatedUsers}
+            sortField={sortField}
+            sortDirection={sortDirection}
+            selectedStatuses={selectedStatuses}
+            selectedBusinessTypes={selectedBusinessTypes}
+            showBusinessTypeFilter={showBusinessTypeFilter}
+            showStatusFilter={showStatusFilter}
+            businessTypeButtonRef={businessTypeButtonRef}
+            statusButtonRef={statusButtonRef}
+            updatingStatus={updatingStatus}
+            onSort={(field) => {
+              if (sortField === field) {
+                setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+              } else {
+                setSortField(field);
+                setSortDirection("asc");
+              }
+            }}
+            onBusinessTypeFilterClick={handleBusinessTypeFilterClick}
+            onStatusFilterClick={handleStatusFilterClick}
+            onStatusChange={handleStatusChangeConfirm}
+            onViewDetails={(user) => {
+              setSelectedUser(user as UserWithDocuments);
+              setIsModalOpen(true);
+            }}
+            onToggleBusinessType={toggleBusinessType}
+            onToggleStatus={toggleStatus}
+          />
+        </div>
+      </div>
+
+      <div className="px-4 py-3 border-t border-gray-200">
+        <UsersTablePagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
+      </div>
+
+      <BusinessTypeFilterDropdown
+        isOpen={showBusinessTypeFilter}
+        position={businessTypePosition}
+        selectedTypes={selectedBusinessTypes}
+        onToggle={toggleBusinessType}
+        onClear={() => {
+          setSelectedBusinessTypes([]);
+          setShowBusinessTypeFilter(false);
+          setCurrentPage(1);
+        }}
+        onClose={() => setShowBusinessTypeFilter(false)}
+      />
+
+      <StatusFilterDropdown
+        isOpen={showStatusFilter}
+        position={statusPosition}
+        selectedStatuses={selectedStatuses}
+        onToggle={toggleStatus}
+        onClear={() => {
           setSelectedStatuses([]);
-          setMainSearch("");
+          setShowStatusFilter(false);
+          setCurrentPage(1);
         }}
-        selectedStatuses={selectedStatuses}
-        onOpenStatusFilter={() => setIsStatusModalOpen(true)}
-      />
-
-      <UsersTable
-        users={paginatedUsers}
-        sortField={sortField}
-        sortDirection={sortDirection}
-        selectedStatuses={selectedStatuses}
-        selectedBusinessTypes={selectedBusinessTypes}
-        showBusinessTypeFilter={false}
-        showStatusFilter={false}
-        businessTypeButtonRef={businessTypeButtonRef}
-        statusButtonRef={{ current: null }}
-        updatingStatus={updatingStatus}
-        onSort={(field) => {
-          setSortField(field);
-          setSortDirection(sortDirection === "asc" ? "desc" : "asc");
-        }}
-        onBusinessTypeFilterClick={() => {}}
-        onStatusFilterClick={() => {}}
-        onStatusChange={handleStatusChangeConfirm}
-        onViewDetails={(user) => {
-          setSelectedUser(user as UserWithDocuments);
-          setIsModalOpen(true);
-        }}
-        onToggleBusinessType={() => {}}
-        onToggleStatus={toggleStatus}
-      />
-
-      <UsersTablePagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={setCurrentPage}
+        onClose={() => setShowStatusFilter(false)}
       />
 
       <StatusChangeModal
@@ -291,18 +436,9 @@ export default function UsersView() {
           user={selectedUser}
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
-          // ✅ Now wired up — enables the dropdown in the modal
           onStatusChange={handleModalStatusChange}
         />
       )}
-
-      <StatusFilterModal
-        isOpen={isStatusModalOpen}
-        onClose={() => setIsStatusModalOpen(false)}
-        selectedStatuses={selectedStatuses}
-        onToggle={toggleStatus}
-        onClear={() => setSelectedStatuses([])}
-      />
     </div>
   );
 }

@@ -7,7 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { STATUS_OPTIONS } from "./types";
+import { STATUS_OPTIONS } from "../components/types";
 
 interface Props {
   isOpen: boolean;

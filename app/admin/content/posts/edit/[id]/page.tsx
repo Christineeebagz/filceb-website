@@ -1,6 +1,6 @@
 import { getPostById } from "@/lib/actions/posts";
 import { notFound } from "next/navigation";
-import { PostForm } from "../../../PostForm";
+import { PostForm } from "../../../../../../components/admin/content/PostForm";
 
 interface EditPostPageProps {
   params: {

@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
-import { PostForm } from "../../PostForm";
+import { PostForm } from "../../../../../components/admin/content/PostForm";
 
 export default async function NewPostPage() {
   const session = await auth();

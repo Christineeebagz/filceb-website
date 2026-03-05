@@ -1,10 +1,16 @@
+// lib/actions/posts.ts
 "use server";
 
 import { db } from "@/database/drizzle";
-import { posts } from "@/database/schema";
+import { posts, users } from "@/database/schema";
 import { eq, desc, and, sql, count } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
-import type { NewPost, PostType, PostStatus } from "@/types/content";
+import type {
+  NewPost,
+  PostType,
+  PostStatus,
+  PostWithAuthor,
+} from "@/types/content";
 import { auth } from "@/auth";
 
 export async function updatePost(postId: string, postData: Partial<NewPost>) {
@@ -46,14 +52,35 @@ export async function getPosts(filters?: {
   limit?: number;
 }) {
   try {
+    // Join with users table to get author information
     const postsData = await db
-      .select()
+      .select({
+        id: posts.id,
+        title: posts.title,
+        content: posts.content,
+        type: posts.type,
+        mediaUrl: posts.mediaUrl,
+        embedCode: posts.embedCode,
+        status: posts.status,
+        authorId: posts.authorId,
+        createdAt: posts.createdAt,
+        updatedAt: posts.updatedAt,
+        publishedAt: posts.publishedAt,
+        orderIndex: posts.orderIndex,
+        author: {
+          id: users.id,
+          firstName: users.firstName,
+          lastName: users.lastName,
+          email: users.email,
+        },
+      })
       .from(posts)
+      .leftJoin(users, eq(posts.authorId, users.id))
       .where(filters?.status ? eq(posts.status, filters.status) : undefined)
       .orderBy(desc(posts.createdAt))
       .limit(filters?.limit || 50);
 
-    return { success: true, data: postsData };
+    return { success: true, data: postsData as PostWithAuthor[] };
   } catch (error) {
     console.error("Error fetching posts:", error);
     return { success: false, error: "Failed to fetch posts" };
@@ -63,8 +90,28 @@ export async function getPosts(filters?: {
 export async function getPostById(postId: string) {
   try {
     const [post] = await db
-      .select()
+      .select({
+        id: posts.id,
+        title: posts.title,
+        content: posts.content,
+        type: posts.type,
+        mediaUrl: posts.mediaUrl,
+        embedCode: posts.embedCode,
+        status: posts.status,
+        authorId: posts.authorId,
+        createdAt: posts.createdAt,
+        updatedAt: posts.updatedAt,
+        publishedAt: posts.publishedAt,
+        orderIndex: posts.orderIndex,
+        author: {
+          id: users.id,
+          firstName: users.firstName,
+          lastName: users.lastName,
+          email: users.email,
+        },
+      })
       .from(posts)
+      .leftJoin(users, eq(posts.authorId, users.id))
       .where(eq(posts.id, postId))
       .limit(1);
 
@@ -72,7 +119,7 @@ export async function getPostById(postId: string) {
       return { success: false, error: "Post not found" };
     }
 
-    return { success: true, data: post };
+    return { success: true, data: post as PostWithAuthor };
   } catch (error) {
     console.error("Error fetching post:", error);
     return { success: false, error: "Failed to fetch post" };

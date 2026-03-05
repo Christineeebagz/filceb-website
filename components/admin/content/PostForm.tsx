@@ -1,10 +1,12 @@
+// components/admin/content/PostForm.tsx
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Post, NewPost, PostType } from "@/types/content";
+import { Post, NewPost, PostType, SessionUser } from "@/types/content";
 import { createPost, updatePost } from "@/lib/actions/posts";
 import { Button } from "@/components/ui/button";
+import { useSession } from "next-auth/react";
 
 interface PostFormProps {
   post?: Post;
@@ -13,6 +15,7 @@ interface PostFormProps {
 
 export function PostForm({ post, mode }: PostFormProps) {
   const router = useRouter();
+  const { data: session } = useSession();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState<Omit<NewPost, "id" | "authorId">>({
     title: post?.title || "",
@@ -23,6 +26,22 @@ export function PostForm({ post, mode }: PostFormProps) {
     status: post?.status || "DRAFT",
     orderIndex: post?.orderIndex || 0,
   });
+
+  // Get author name for display
+  const getAuthorName = () => {
+    const user = session?.user as SessionUser | undefined;
+    if (!user) return "Unknown";
+
+    // Try to get firstName and lastName if they exist
+    const firstName = (user as any).firstName;
+    const lastName = (user as any).lastName;
+    const email = user.email;
+
+    if (firstName && lastName) return `${firstName} ${lastName}`;
+    if (firstName) return firstName;
+    if (lastName) return lastName;
+    return email;
+  };
 
   const handleSubmit = async (status: "DRAFT" | "PUBLISHED" | "ARCHIVED") => {
     setIsLoading(true);
@@ -98,6 +117,26 @@ export function PostForm({ post, mode }: PostFormProps) {
 
   return (
     <form onSubmit={(e) => e.preventDefault()} className="space-y-6 max-w-2xl">
+      {/* Author Info - New Section */}
+      <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+        <h3 className="text-sm font-medium text-gray-700 mb-2">
+          Author Information
+        </h3>
+        <div className="text-sm text-gray-600">
+          {mode === "create" ? (
+            <p>
+              Creating as:{" "}
+              <span className="font-medium">{getAuthorName()}</span>
+            </p>
+          ) : (
+            <p>
+              Last edited by:{" "}
+              <span className="font-medium">{getAuthorName()}</span>
+            </p>
+          )}
+        </div>
+      </div>
+
       {/* Title */}
       <div>
         <label htmlFor="title" className="block text-sm font-medium mb-2">
@@ -196,7 +235,7 @@ export function PostForm({ post, mode }: PostFormProps) {
       )}
 
       {/* Order Index */}
-      <div>
+      {/* <div>
         <label htmlFor="orderIndex" className="block text-sm font-medium mb-2">
           Order Index
         </label>
@@ -209,7 +248,7 @@ export function PostForm({ post, mode }: PostFormProps) {
           }
           className="w-full p-2 border rounded-md"
         />
-      </div>
+      </div> */}
 
       {/* Published Info - Show for existing published posts */}
       {mode === "edit" && post?.publishedAt && (

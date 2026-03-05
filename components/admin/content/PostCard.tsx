@@ -1,3 +1,4 @@
+//components/admin/content/PostCard.tsx
 "use client";
 import { Post } from "@/types/content";
 import { Button } from "@/components/ui/button";
